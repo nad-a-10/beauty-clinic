@@ -6,14 +6,10 @@ import useEmblaCarousel from "embla-carousel-react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-import banner01 from "@/Images/banner/IMG_1209.jpeg";
-import banner02 from "@/Images/banner/840CDA9E-C942-49A3-8748-92316FF95574.jpeg";
-import banner03 from "@/Images/banner/6004072E-1F92-41F0-957F-37CBFEC5899B.jpeg";
-import banner04 from "@/Images/banner/A5D8F781-35D9-4A49-A62E-A33B3CDD216E.jpeg";
-import banner05 from "@/Images/banner/CC733FC0-9E31-43F6-A8EC-C335315304FC.jpeg";
-import banner06 from "@/Images/banner/DC63ABF5-DBAE-451C-9EFA-A76F1CE0C677.jpeg";
-import banner07 from "@/Images/banner/f400737c-fc67-42db-b1cf-c1b77566679a.jpeg";
-import banner08 from "@/Images/banner/9C25EC54-6065-46DE-9435-4929CF92C9AA.jpeg";
+import banner01 from "@/Images/banner/IMG_0620.jpeg";
+import banner02 from "@/Images/banner/8F4EDDC4-9F49-4EF6-97FE-2156769BCD57.jpeg";
+import banner03 from "@/Images/banner/CC733FC0-9E31-43F6-A8EC-C335315304FC.jpeg";
+import banner04 from "@/Images/banner/9C25EC54-6065-46DE-9435-4929CF92C9AA.jpeg";
 
 type Slide = { src: StaticImageData; alt: string };
 
@@ -22,10 +18,6 @@ const SLIDES: Slide[] = [
   { src: banner02, alt: "Inside the atelier" },
   { src: banner03, alt: "Inside the atelier" },
   { src: banner04, alt: "Inside the atelier" },
-  { src: banner05, alt: "Inside the atelier" },
-  { src: banner06, alt: "Inside the atelier" },
-  { src: banner07, alt: "Inside the atelier" },
-  { src: banner08, alt: "Inside the atelier" },
 ];
 
 export function Slideshow() {
