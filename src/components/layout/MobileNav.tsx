@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { siteConfig } from "@/config/site";
@@ -8,13 +9,23 @@ import { cn } from "@/lib/utils";
 
 export function MobileNav() {
   const [open, setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     if (open) {
       const prev = document.body.style.overflow;
       document.body.style.overflow = "hidden";
+      const onKeyDown = (e: KeyboardEvent) => {
+        if (e.key === "Escape") setOpen(false);
+      };
+      window.addEventListener("keydown", onKeyDown);
       return () => {
         document.body.style.overflow = prev;
+        window.removeEventListener("keydown", onKeyDown);
       };
     }
   }, [open]);
@@ -31,13 +42,21 @@ export function MobileNav() {
         <Menu className="h-5 w-5" aria-hidden />
       </button>
 
-      <div
-        className={cn(
-          "fixed inset-0 z-50 transition md:hidden",
-          open ? "pointer-events-auto" : "pointer-events-none",
-        )}
-        aria-hidden={!open}
-      >
+      {/*
+        Portalled to <body> so the fixed overlay is positioned against the
+        viewport. Rendering it inside the header would trap it in the header's
+        containing block (the header uses backdrop-blur, which makes it the
+        containing block for fixed descendants).
+      */}
+      {mounted &&
+        createPortal(
+          <div
+            className={cn(
+              "fixed inset-0 z-50 transition md:hidden",
+              open ? "pointer-events-auto" : "pointer-events-none",
+            )}
+            aria-hidden={!open}
+          >
         <div
           onClick={() => setOpen(false)}
           className={cn(
@@ -94,7 +113,9 @@ export function MobileNav() {
             </p>
           </div>
         </aside>
-      </div>
+          </div>,
+          document.body,
+        )}
     </>
   );
 }
