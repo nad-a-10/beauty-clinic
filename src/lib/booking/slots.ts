@@ -12,6 +12,11 @@ export interface GenerateSlotsArgs {
   hoursForDay: DayHours | null;
   date: Date;
   existingBookings: BookingTimeRange[];
+  /**
+   * How many bookings may overlap a slot before it's full. Defaults to 1
+   * (single room). Pools like nails pass a higher capacity.
+   */
+  capacity?: number;
 }
 
 function setMinutesOnDay(base: Date, minutes: number): Date {
@@ -32,11 +37,13 @@ export function generateSlots(args: GenerateSlotsArgs): Date[] {
     hoursForDay,
     date,
     existingBookings,
+    capacity = 1,
   } = args;
 
   if (!hoursForDay) return [];
   if (granularityMin <= 0) return [];
   if (serviceDurationMin <= 0) return [];
+  if (capacity <= 0) return [];
 
   const open = setMinutesOnDay(date, hoursForDay.openMinutes);
   const close = setMinutesOnDay(date, hoursForDay.closeMinutes);
@@ -51,8 +58,10 @@ export function generateSlots(args: GenerateSlotsArgs): Date[] {
       end: addMinutes(cursor, serviceDurationMin),
     };
 
-    const conflict = existingBookings.some((b) => rangesOverlap(candidate, b));
-    if (!conflict) slots.push(cursor);
+    const overlaps = existingBookings.filter((b) =>
+      rangesOverlap(candidate, b),
+    ).length;
+    if (overlaps < capacity) slots.push(cursor);
 
     cursor = addMinutes(cursor, granularityMin);
   }

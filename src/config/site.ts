@@ -14,10 +14,11 @@ export const siteConfig = {
     instagramHandle: "@laudymaamary",
     facebook: "https://facebook.com/Laudy-Maamary-Beauty-Center",
     facebookLabel: "Laudy Maamary Beauty Center",
-    addressLines: ["Alma Center, Dekwaneh", "Mount Lebanon, Lebanon"],
+    addressLines: ["Aamrit Chalhoub, Zalqa", "Next to Haroun Hospital"],
+    mapsUrl: "https://maps.app.goo.gl/Lceq4wVTA3h8wRsy7?g_st=aw",
   },
   hours: {
-    weekdays: "Mon – Sat · 09:00 – 18:00",
+    weekdays: "Mon – Sat · 09:00 – 19:00",
     sunday: "Sunday · select services by appointment",
   },
   nav: [

@@ -85,10 +85,10 @@ const Pill = ({
     onClick={onClick}
     aria-current={active ? "true" : undefined}
     className={cn(
-      "group inline-flex shrink-0 items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium transition",
+      "group inline-flex shrink-0 cursor-pointer items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium transition duration-200",
       active
         ? "border-rose-500 bg-rose-500 text-white shadow-soft"
-        : "border-line/70 bg-ivory text-charcoal hover:border-rose-300 hover:bg-rose-50",
+        : "border-line/70 bg-ivory text-charcoal hover:-translate-y-0.5 hover:border-rose-300 hover:bg-rose-50 hover:text-rose-600 hover:shadow-soft",
     )}
   >
     <span>{label}</span>

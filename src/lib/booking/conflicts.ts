@@ -16,3 +16,10 @@ export function findConflict(
   }
   return null;
 }
+
+export function countOverlaps(
+  candidate: BookingTimeRange,
+  existing: BookingTimeRange[],
+): number {
+  return existing.filter((range) => rangesOverlap(candidate, range)).length;
+}

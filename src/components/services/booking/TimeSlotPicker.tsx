@@ -62,7 +62,7 @@ export function TimeSlotPicker({
 
       <div className="mt-5 min-h-24">
         {loading ? (
-          <div className="grid grid-cols-3 gap-2 sm:grid-cols-4 md:grid-cols-6">
+          <div className="grid grid-cols-3 gap-2 xs:grid-cols-4 sm:grid-cols-5 md:grid-cols-6">
             {Array.from({ length: 12 }).map((_, i) => (
               <div
                 key={i}
@@ -84,7 +84,7 @@ export function TimeSlotPicker({
           <div
             role="radiogroup"
             aria-label="Available times"
-            className="grid grid-cols-3 gap-2 sm:grid-cols-4 md:grid-cols-6"
+            className="grid grid-cols-3 gap-2 xs:grid-cols-4 sm:grid-cols-5 md:grid-cols-6"
           >
             {slots.map((iso) => {
               const time = format(new Date(iso), "h:mm a");
@@ -97,7 +97,7 @@ export function TimeSlotPicker({
                   aria-checked={selected}
                   onClick={() => onSelect(iso)}
                   className={cn(
-                    "rounded-2xl border px-3 py-3 text-sm font-medium transition",
+                    "rounded-2xl border px-2 py-2.5 text-xs font-medium transition sm:px-3 sm:py-3 sm:text-sm",
                     selected
                       ? "border-rose-500 bg-rose-500 text-white shadow-soft"
                       : "border-line/70 bg-ivory text-charcoal hover:border-rose-300 hover:bg-rose-50",

@@ -1,6 +1,8 @@
 @import "tailwindcss";
 
 @theme {
+  --breakpoint-xs: 30rem;
+
   --color-rose-50:  #FDF6F4;
   --color-rose-100: #FCEAE5;
   --color-rose-200: #F9D7CC;

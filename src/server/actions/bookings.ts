@@ -5,7 +5,8 @@ import { findServiceBySlug } from "@/data/catalog";
 import { isSupabaseConfigured } from "@/config/env";
 import { siteConfig } from "@/config/site";
 import { dayHoursFromHHMM, generateSlots } from "@/lib/booking/slots";
-import { findConflict } from "@/lib/booking/conflicts";
+import { countOverlaps } from "@/lib/booking/conflicts";
+import { poolForCategoryId, poolForServiceId } from "@/lib/booking/resources";
 import { bookingFormSchema } from "@/lib/booking/schema";
 import { getNotifier } from "@/lib/booking/notifier";
 import { createSupabaseAdmin } from "@/lib/supabase/server";
@@ -20,12 +21,12 @@ const DEFAULT_GRANULARITY = 15;
 
 const CLINIC_HOURS_HHMM: Record<number, [string, string] | null> = {
   0: null,
-  1: ["09:00", "18:00"],
-  2: ["09:00", "18:00"],
-  3: ["09:00", "18:00"],
-  4: ["09:00", "18:00"],
-  5: ["09:00", "18:00"],
-  6: ["09:00", "18:00"],
+  1: ["09:00", "19:00"],
+  2: ["09:00", "19:00"],
+  3: ["09:00", "19:00"],
+  4: ["09:00", "19:00"],
+  5: ["09:00", "19:00"],
+  6: ["09:00", "19:00"],
 };
 
 const SUNDAY_HOURS_HHMM: [string, string] = ["11:00", "17:00"];
@@ -39,10 +40,13 @@ function clinicHoursForDate(date: Date, weekdayMask: number) {
   return dayHoursFromHHMM(...hhmm);
 }
 
-async function fetchExistingBookings(
-  serviceId: string,
-  date: Date,
-): Promise<BookingTimeRange[]> {
+type DayBooking = BookingTimeRange & { serviceId: string };
+
+/**
+ * Every active booking for the given day, across all services. Pool filtering
+ * happens in-memory afterwards so the single-room lock spans every service.
+ */
+async function fetchDayBookings(date: Date): Promise<DayBooking[]> {
   const admin = await createSupabaseAdmin();
   if (!admin) return [];
 
@@ -53,22 +57,32 @@ async function fetchExistingBookings(
 
   const { data, error } = await admin
     .from("bookings")
-    .select("scheduled_at,ends_at,status")
-    .eq("service_id", serviceId)
+    .select("service_id,scheduled_at,ends_at,status")
     .in("status", ["pending", "confirmed"])
     .gte("scheduled_at", dayStart.toISOString())
     .lt("scheduled_at", dayEnd.toISOString());
 
   if (error) {
-    console.error("[bookings] fetchExistingBookings error", error);
+    console.error("[bookings] fetchDayBookings error", error);
     return [];
   }
 
-  type BookingRow = { scheduled_at: string; ends_at: string };
+  type BookingRow = { service_id: string; scheduled_at: string; ends_at: string };
   return ((data as BookingRow[] | null) ?? []).map((row) => ({
+    serviceId: row.service_id,
     start: new Date(row.scheduled_at),
     end: new Date(row.ends_at),
   }));
+}
+
+/** Keep only the bookings that compete for the same resource pool. */
+function bookingsInPool(
+  dayBookings: DayBooking[],
+  poolKey: string,
+): BookingTimeRange[] {
+  return dayBookings
+    .filter((b) => poolForServiceId(b.serviceId).key === poolKey)
+    .map(({ start, end }) => ({ start, end }));
 }
 
 export async function getAvailableSlots(
@@ -84,7 +98,9 @@ export async function getAvailableSlots(
   const hours = clinicHoursForDate(date, service.weekdayMask);
   if (!hours) return { slots: [], closed: true };
 
-  const existingBookings = await fetchExistingBookings(service.id, date);
+  const pool = poolForCategoryId(service.categoryId);
+  const dayBookings = await fetchDayBookings(date);
+  const existingBookings = bookingsInPool(dayBookings, pool.key);
 
   const slots = generateSlots({
     serviceDurationMin: service.durationMinutes,
@@ -92,6 +108,7 @@ export async function getAvailableSlots(
     hoursForDay: hours,
     date,
     existingBookings,
+    capacity: pool.capacity,
   });
 
   return {
@@ -137,9 +154,10 @@ export async function createBooking(
     };
   }
 
-  const existingBookings = await fetchExistingBookings(service.id, start);
-  const conflict = findConflict({ start, end }, existingBookings);
-  if (conflict) {
+  const pool = poolForCategoryId(service.categoryId);
+  const dayBookings = await fetchDayBookings(start);
+  const existingBookings = bookingsInPool(dayBookings, pool.key);
+  if (countOverlaps({ start, end }, existingBookings) >= pool.capacity) {
     return {
       ok: false,
       reason: "conflict",

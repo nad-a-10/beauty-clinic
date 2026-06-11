@@ -11,7 +11,7 @@ export function Header() {
           aria-label={`${siteConfig.name} home`}
           className="flex items-baseline gap-2 transition hover:opacity-80"
         >
-          <span className="font-display text-3xl tracking-tight text-charcoal">
+          <span className="font-display text-2xl tracking-tight text-charcoal sm:text-3xl">
             {siteConfig.name}
           </span>
           <span className="hidden text-[10px] uppercase tracking-[0.32em] text-gold-500 md:inline">

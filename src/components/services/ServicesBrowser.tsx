@@ -64,7 +64,7 @@ export function ServicesBrowser({ categories, services }: Props) {
       />
 
       <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
-        <div className="lg:col-span-4 xl:col-span-3">
+        <div className="hidden lg:col-span-4 lg:block xl:col-span-3">
           <CategorySidebar
             categories={categories}
             activeSlug={activeSlug}

@@ -4,7 +4,7 @@ import { ArrowUpRight } from "lucide-react";
 export function BookingCallout() {
   return (
     <section className="mx-auto max-w-7xl px-6 py-20 md:px-10 md:py-28">
-      <div className="relative overflow-hidden rounded-[2.5rem] bg-rose-500 px-8 py-14 text-white shadow-lift md:px-16 md:py-20">
+      <div className="relative overflow-hidden rounded-[2.5rem] bg-rose-500 px-6 py-10 text-white shadow-lift sm:px-8 sm:py-14 md:px-16 md:py-20">
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0 opacity-30"

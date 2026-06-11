@@ -9,7 +9,7 @@ const QUOTES = [
 
 export function Vision() {
   return (
-    <section className="relative overflow-hidden rounded-[2.5rem] bg-rose-500 px-8 py-16 text-white shadow-lift md:px-16 md:py-20">
+    <section className="relative overflow-hidden rounded-[2.5rem] bg-rose-500 px-6 py-12 text-white shadow-lift sm:px-8 sm:py-16 md:px-16 md:py-20">
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 opacity-30"

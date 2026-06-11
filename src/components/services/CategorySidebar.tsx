@@ -41,13 +41,20 @@ export function CategorySidebar({
               type="button"
               onClick={() => onSelect("all")}
               className={cn(
-                "group flex w-full items-center justify-between rounded-2xl px-4 py-3 text-left transition",
+                "group flex w-full cursor-pointer items-center justify-between rounded-2xl px-4 py-3 text-left transition duration-200",
                 activeSlug === "all"
                   ? "bg-rose-500 text-white shadow-soft"
-                  : "hover:bg-rose-50",
+                  : "hover:translate-x-1 hover:bg-rose-50 hover:shadow-soft",
               )}
             >
-              <span className="font-display text-lg">All services</span>
+              <span
+                className={cn(
+                  "font-display text-lg transition-colors",
+                  activeSlug !== "all" && "group-hover:text-rose-600",
+                )}
+              >
+                All services
+              </span>
               <span
                 className={cn(
                   "rounded-full px-2.5 py-1 text-[11px] font-medium",
@@ -71,14 +78,19 @@ export function CategorySidebar({
                   onClick={() => onSelect(cat.slug)}
                   aria-current={isActive ? "true" : undefined}
                   className={cn(
-                    "group flex w-full items-start justify-between gap-4 rounded-2xl px-4 py-3 text-left transition",
+                    "group flex w-full cursor-pointer items-start justify-between gap-4 rounded-2xl px-4 py-3 text-left transition duration-200",
                     isActive
                       ? "bg-rose-500 text-white shadow-soft"
-                      : "hover:bg-rose-50",
+                      : "hover:translate-x-1 hover:bg-rose-50 hover:shadow-soft",
                   )}
                 >
                   <div className="flex flex-col">
-                    <span className="font-display text-lg leading-tight">
+                    <span
+                      className={cn(
+                        "font-display text-lg leading-tight transition-colors",
+                        !isActive && "group-hover:text-rose-600",
+                      )}
+                    >
                       {cat.name}
                     </span>
                     <span

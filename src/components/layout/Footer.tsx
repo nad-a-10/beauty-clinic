@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Mail, Phone } from "lucide-react";
+import { Mail, MapPin, Phone } from "lucide-react";
 import { siteConfig } from "@/config/site";
 
 function InstagramIcon(props: React.SVGProps<SVGSVGElement>) {
@@ -61,6 +61,15 @@ export function Footer() {
               </span>
             ))}
           </address>
+          <a
+            href={siteConfig.contact.mapsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 text-sm text-rose-600 underline-offset-4 transition hover:underline"
+          >
+            <MapPin className="h-4 w-4" aria-hidden />
+            View on Google Maps
+          </a>
           <p className="text-sm leading-relaxed text-charcoal/80">
             <span className="block">{siteConfig.hours.weekdays}</span>
             <span className="block">{siteConfig.hours.sunday}</span>

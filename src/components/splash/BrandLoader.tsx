@@ -30,12 +30,12 @@ export function BrandLoader() {
               transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
               className="relative"
             >
-              <div className="font-display text-5xl tracking-tight text-charcoal sm:text-6xl md:text-7xl">
+              <div className="font-display text-4xl tracking-tight text-charcoal xs:text-5xl sm:text-6xl md:text-7xl">
                 {siteConfig.name}
               </div>
               <div
                 aria-hidden
-                className="gold-shimmer pointer-events-none absolute inset-0 font-display text-5xl tracking-tight sm:text-6xl md:text-7xl"
+                className="gold-shimmer pointer-events-none absolute inset-0 font-display text-4xl tracking-tight xs:text-5xl sm:text-6xl md:text-7xl"
               >
                 {siteConfig.name}
               </div>

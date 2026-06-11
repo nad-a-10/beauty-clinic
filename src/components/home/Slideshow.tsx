@@ -91,14 +91,14 @@ export function Slideshow() {
           {SLIDES.map((slide, idx) => (
             <div
               key={idx}
-              className="relative min-w-0 flex-[0_0_78%] pl-4 md:flex-[0_0_46%] lg:flex-[0_0_36%]"
+              className="relative min-w-0 flex-[0_0_82%] pl-3 xs:flex-[0_0_66%] sm:flex-[0_0_52%] sm:pl-4 md:flex-[0_0_46%] lg:flex-[0_0_36%]"
             >
               <figure className="relative aspect-[3/4] w-full overflow-hidden rounded-[2rem] shadow-soft">
                 <Image
                   src={slide.src}
                   alt={slide.alt}
                   fill
-                  sizes="(min-width: 1024px) 36vw, (min-width: 768px) 46vw, 78vw"
+                  sizes="(min-width: 1024px) 36vw, (min-width: 768px) 46vw, (min-width: 640px) 52vw, (min-width: 480px) 66vw, 82vw"
                   className="object-cover"
                   placeholder="blur"
                   priority={idx === 0}

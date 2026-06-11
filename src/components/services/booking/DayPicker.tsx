@@ -60,7 +60,7 @@ export function DayPicker({ weekdayMask, selectedDate, onSelect }: Props) {
       <div
         role="radiogroup"
         aria-label="Available days"
-        className="grid grid-cols-3 gap-2 sm:grid-cols-5 md:grid-cols-7"
+        className="grid grid-cols-3 gap-2 xs:grid-cols-4 sm:grid-cols-5 md:grid-cols-7"
       >
         {days.map((day) => {
           const open = isOpenOn(weekdayMask, day.getDay());
@@ -74,7 +74,7 @@ export function DayPicker({ weekdayMask, selectedDate, onSelect }: Props) {
               disabled={!open}
               onClick={() => open && onSelect(day)}
               className={cn(
-                "flex flex-col items-center gap-1 rounded-2xl border px-3 py-3 text-center transition",
+                "flex flex-col items-center gap-1 rounded-2xl border px-2 py-3 text-center transition sm:px-3",
                 selected
                   ? "border-rose-500 bg-rose-500 text-white shadow-soft"
                   : open
