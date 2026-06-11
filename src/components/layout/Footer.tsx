@@ -83,16 +83,6 @@ export function Footer() {
               </a>
             </li>
             <li className="flex items-center gap-3">
-              <Phone className="h-4 w-4 text-rose-500" aria-hidden />
-              <a
-                href={`tel:${siteConfig.contact.centerPhoneDisplay.replace(/\s/g, "")}`}
-                className="transition hover:text-rose-600"
-              >
-                {siteConfig.contact.centerPhoneDisplay}{" "}
-                <span className="text-muted">· studio</span>
-              </a>
-            </li>
-            <li className="flex items-center gap-3">
               <Mail className="h-4 w-4 text-rose-500" aria-hidden />
               <a
                 href={`mailto:${siteConfig.contact.email}`}

@@ -39,7 +39,7 @@ export function HeroBanner() {
             </Link>
           </div>
 
-          <dl className="mt-14 grid grid-cols-3 gap-x-8 border-t border-line/60 pt-10 text-sm sm:gap-x-12">
+          <dl className="mt-14 flex flex-wrap gap-x-16 gap-y-6 border-t border-line/60 pt-10 text-sm sm:gap-x-20">
             <div className="space-y-1.5">
               <dt className="text-[11px] uppercase tracking-[0.24em] text-muted">
                 Open
@@ -48,18 +48,7 @@ export function HeroBanner() {
                 Mon&ndash;Sat
               </dd>
               <dd className="text-xs text-muted sm:whitespace-nowrap">
-                10:00 &ndash; 19:00
-              </dd>
-            </div>
-            <div className="space-y-1.5">
-              <dt className="text-[11px] uppercase tracking-[0.24em] text-muted">
-                Treatments
-              </dt>
-              <dd className="font-display text-2xl leading-tight text-charcoal">
-                47
-              </dd>
-              <dd className="text-xs text-muted sm:whitespace-nowrap">
-                across 9 categories
+                09:00 &ndash; 18:00
               </dd>
             </div>
             <div className="space-y-1.5">

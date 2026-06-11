@@ -8,7 +8,6 @@ export const siteConfig = {
   url: "https://example.com",
   contact: {
     phoneDisplay: "+961 3 542 197",
-    centerPhoneDisplay: "+961 1 684 864",
     whatsappE164: "+9613542197",
     email: "laudimaamari@hotmail.com",
     instagram: "https://instagram.com/laudymaamary",
@@ -18,7 +17,7 @@ export const siteConfig = {
     addressLines: ["Alma Center, Dekwaneh", "Mount Lebanon, Lebanon"],
   },
   hours: {
-    weekdays: "Mon – Sat · 10:00 – 19:00",
+    weekdays: "Mon – Sat · 09:00 – 18:00",
     sunday: "Sunday · select services by appointment",
   },
   nav: [

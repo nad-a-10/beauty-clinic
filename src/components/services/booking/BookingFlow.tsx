@@ -268,7 +268,7 @@ function BookingSummary({
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={service.imageUrl}
-            alt={`${service.name} placeholder`}
+            alt={service.name}
             className="h-full w-full object-cover"
           />
         ) : (

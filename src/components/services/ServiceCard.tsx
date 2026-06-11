@@ -19,7 +19,7 @@ export function ServiceCard({ service, categoryName }: Props) {
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={service.imageUrl}
-            alt={`${service.name} placeholder`}
+            alt={service.name}
             className="h-full w-full object-cover transition duration-700 group-hover:scale-[1.03]"
           />
         ) : (
