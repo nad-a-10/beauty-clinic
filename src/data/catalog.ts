@@ -13,6 +13,13 @@ import shadowBrowsImg from "@/Images/services/eyebrow_tattoo.png";
 import liftTreatmentImg from "@/Images/services/lift_treatment.png";
 import lipBlushImg from "@/Images/services/lip_blush.jpg";
 import lashExtensionsImg from "@/Images/services/lash_extension.png";
+import manicureImg from "@/Images/services/manicure.jpeg";
+import pedicureImg from "@/Images/services/pedicure.jpeg";
+import spaPedicureImg from "@/Images/services/spa_pedicure.jpeg";
+import russianManicureImg from "@/Images/services/russian_manicure.jpeg";
+import gelColorImg from "@/Images/services/gel_color.jpeg";
+import rubberBaseImg from "@/Images/services/rubber_base.jpeg";
+import fullSetGelImg from "@/Images/services/gel.jpeg";
 
 export const PLACEHOLDER_CATEGORIES: Category[] = [
   {
@@ -633,7 +640,7 @@ export const PLACEHOLDER_SERVICES: Service[] = [
     description: "Classic manicure — shape, cuticle care, and a clean finish.",
     priceCents: 1500,
     durationMinutes: 30,
-    imageUrl: "https://images.unsplash.com/photo-1610992015836-7c249d75782d?auto=format&fit=crop&w=900&q=80",
+    imageUrl: manicureImg.src,
     weekdayMask: MON_TO_SAT_MASK,
     isActive: true,
     sortOrder: 1,
@@ -659,7 +666,7 @@ export const PLACEHOLDER_SERVICES: Service[] = [
     description: "Classic pedicure — shape, cuticle care, and a clean finish.",
     priceCents: 2000,
     durationMinutes: 45,
-    imageUrl: "https://images.unsplash.com/photo-1664643411326-6c589531be3c?auto=format&fit=crop&w=900&q=80",
+    imageUrl: pedicureImg.src,
     weekdayMask: MON_TO_SAT_MASK,
     isActive: true,
     sortOrder: 3,
@@ -672,7 +679,7 @@ export const PLACEHOLDER_SERVICES: Service[] = [
     description: "Pedicure with an added soak, scrub, and foot massage.",
     priceCents: 3000,
     durationMinutes: 60,
-    imageUrl: "https://images.unsplash.com/photo-1519419451778-14599a49ec41?auto=format&fit=crop&w=900&q=80",
+    imageUrl: spaPedicureImg.src,
     weekdayMask: MON_TO_SAT_MASK,
     isActive: true,
     sortOrder: 4,
@@ -685,7 +692,7 @@ export const PLACEHOLDER_SERVICES: Service[] = [
     description: "Russian dry manicure with gel polish application.",
     priceCents: 1800,
     durationMinutes: 35,
-    imageUrl: "https://images.unsplash.com/photo-1633955726992-2b7c0d2d2a69?auto=format&fit=crop&w=900&q=80",
+    imageUrl: russianManicureImg.src,
     weekdayMask: MON_TO_SAT_MASK,
     isActive: true,
     sortOrder: 5,
@@ -694,11 +701,11 @@ export const PLACEHOLDER_SERVICES: Service[] = [
     id: "srv-nails-russian-gel-color",
     categoryId: "cat-nails",
     slug: "nails-russian-gel-color",
-    name: "Russian Manicure + Gel Color",
+    name: "Gel Color",
     description: "Russian dry manicure finished with long-lasting gel color.",
     priceCents: 2500,
     durationMinutes: 45,
-    imageUrl: "https://images.unsplash.com/photo-1641814250010-9887d86eedfd?auto=format&fit=crop&w=900&q=80",
+    imageUrl: gelColorImg.src,
     weekdayMask: MON_TO_SAT_MASK,
     isActive: true,
     sortOrder: 6,
@@ -707,11 +714,11 @@ export const PLACEHOLDER_SERVICES: Service[] = [
     id: "srv-nails-russian-rubber-base",
     categoryId: "cat-nails",
     slug: "nails-russian-rubber-base",
-    name: "Russian Manicure + Rubber Base",
+    name: "Rubber Base",
     description: "Russian dry manicure with a strengthening rubber base.",
     priceCents: 3000,
     durationMinutes: 45,
-    imageUrl: "https://images.unsplash.com/photo-1612887390768-fb02affea7a6?auto=format&fit=crop&w=900&q=80",
+    imageUrl: rubberBaseImg.src,
     weekdayMask: MON_TO_SAT_MASK,
     isActive: true,
     sortOrder: 7,
@@ -720,7 +727,7 @@ export const PLACEHOLDER_SERVICES: Service[] = [
     id: "srv-nails-russian-rubber-gel-color",
     categoryId: "cat-nails",
     slug: "nails-russian-rubber-gel-color",
-    name: "Russian Mani + Rubber Base + Gel Color",
+    name: "Rubber Base + Gel Color",
     description:
       "Russian dry manicure with rubber base and gel color in one session.",
     priceCents: 3500,
@@ -734,11 +741,11 @@ export const PLACEHOLDER_SERVICES: Service[] = [
     id: "srv-nails-russian-full-set-gel",
     categoryId: "cat-nails",
     slug: "nails-russian-full-set-gel",
-    name: "Russian Mani + Full Set Gel",
+    name: "Full Set Gel",
     description: "Russian dry manicure with a full set of gel extensions.",
     priceCents: 6500,
     durationMinutes: 90,
-    imageUrl: "https://images.unsplash.com/photo-1604902396830-aca29e19b067?auto=format&fit=crop&w=900&q=80",
+    imageUrl: fullSetGelImg.src,
     weekdayMask: MON_TO_SAT_MASK,
     isActive: true,
     sortOrder: 9,

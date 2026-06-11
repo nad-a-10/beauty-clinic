@@ -2,7 +2,7 @@
 
 import { addDays, format, isSameDay, startOfToday } from "date-fns";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { isOpenOn, type WeekdayMask } from "@/types/catalog";
 
@@ -15,17 +15,49 @@ interface Props {
 const VISIBLE_DAYS = 14;
 
 export function DayPicker({ weekdayMask, selectedDate, onSelect }: Props) {
-  const [windowStart, setWindowStart] = useState<Date>(startOfToday());
+  // `startOfToday()` is timezone-dependent, so computing it during render
+  // makes the server (UTC) and client (local) HTML disagree and triggers a
+  // hydration mismatch. Resolve it on the client after mount instead.
+  const [windowStart, setWindowStart] = useState<Date | null>(null);
 
-  const days = Array.from({ length: VISIBLE_DAYS }, (_, i) =>
-    addDays(windowStart, i),
-  );
+  useEffect(() => {
+    setWindowStart(startOfToday());
+  }, []);
 
   function shift(by: number) {
+    if (!windowStart) return;
     const next = addDays(windowStart, by);
     if (next < startOfToday() && by < 0) return;
     setWindowStart(next);
   }
+
+  if (!windowStart) {
+    return (
+      <div>
+        <div className="mb-4">
+          <h3 className="font-display text-2xl text-charcoal">Pick a day</h3>
+          <p className="mt-1 text-sm text-muted">
+            Closed days for this service appear muted.
+          </p>
+        </div>
+        <div
+          className="grid grid-cols-3 gap-2 xs:grid-cols-4 sm:grid-cols-5 md:grid-cols-7"
+          aria-hidden
+        >
+          {Array.from({ length: VISIBLE_DAYS }).map((_, i) => (
+            <div
+              key={i}
+              className="h-19 animate-pulse rounded-2xl bg-line/40"
+            />
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  const days = Array.from({ length: VISIBLE_DAYS }, (_, i) =>
+    addDays(windowStart, i),
+  );
 
   return (
     <div>
