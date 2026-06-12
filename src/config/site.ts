@@ -4,7 +4,7 @@ export const siteConfig = {
   role: "Beauty Expert",
   tagline: "Where Care Meets Craft",
   description:
-    "Laudy Maamary Beauty Center, Dekwaneh, Lebanon. Permanent makeup, facials, lashes, body care, and considered beauty rituals — twenty-five years of practice in one quiet room.",
+    "Laudy Maamary Beauty Center, Zalka, Lebanon. Permanent makeup, facials, lashes, body care, and considered beauty rituals — twenty-five years of practice in one quiet room.",
   url: "https://example.com",
   contact: {
     phoneDisplay: "+961 3 542 197",
