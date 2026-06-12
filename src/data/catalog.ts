@@ -12,7 +12,7 @@ import promMakeupImg from "@/Images/services/prom.jpg";
 import shadowBrowsImg from "@/Images/services/eyebrow_tattoo.png";
 import liftTreatmentImg from "@/Images/services/lift_treatment.png";
 import lipBlushImg from "@/Images/services/lip_blush.jpg";
-import lashExtensionsImg from "@/Images/services/lash_extension.png";
+import lashExtensionsImg from "@/Images/services/lash_extensions.jpg";
 import manicureImg from "@/Images/services/manicure.jpeg";
 import pedicureImg from "@/Images/services/pedicure.jpeg";
 import spaPedicureImg from "@/Images/services/spa_pedicure.jpeg";
@@ -20,6 +20,30 @@ import russianManicureImg from "@/Images/services/russian_manicure.jpeg";
 import gelColorImg from "@/Images/services/gel_color.jpeg";
 import rubberBaseImg from "@/Images/services/rubber_base.jpeg";
 import fullSetGelImg from "@/Images/services/gel.jpeg";
+import basicEyebrowsImg from "@/Images/services/basic_eyebrows.jpg";
+import micropigmentationImg from "@/Images/services/micro_pigmentation.jpg";
+import deepCleansingFacialImg from "@/Images/services/deep_cleansing_facial.jpg";
+import underEyesImg from "@/Images/services/under_eyes_treatment.jpg";
+import microNeedlingImg from "@/Images/services/micro_needling.jpg";
+import microNeedlingNeckImg from "@/Images/services/micro_needling_neck.jpg";
+import faceNeckMassageImg from "@/Images/services/face_and_neck_massage.jpg";
+import laserTattooRemovalImg from "@/Images/services/laser_tattoo_removal.jpg";
+import lipLinerImg from "@/Images/services/lip_liner_tattoo.jpg";
+import lipLaserRemovalImg from "@/Images/services/lip_laser_removal.jpg";
+import lashLiftImg from "@/Images/services/lash_lifts.jpg";
+import tintedLashesImg from "@/Images/services/tinted_lashes.jpg";
+import underArmsLaserImg from "@/Images/services/underarm_hair_removal.jpg";
+import fullArmLaserImg from "@/Images/services/full_arm_laser.jpg";
+import legLaserImg from "@/Images/services/leg_laser_removal.jpg";
+import bellyBackLaserImg from "@/Images/services/belly_back_laser_removal.jpg";
+import faceLaserImg from "@/Images/services/face_laser.jpg";
+import moustacheLaserImg from "@/Images/services/mustache_laser.jpg";
+import electricEpilationImg from "@/Images/services/electric_epilation.jpg";
+import spaManicureImg from "@/Images/services/spa_manicure.jpg";
+import rubberBaseGelishImg from "@/Images/services/rubber_base_and_gelish.jpg";
+import refillGelImg from "@/Images/services/refill_gel.jpg";
+import frenchImg from "@/Images/services/french.jpg";
+import nailDesignImg from "@/Images/services/design.jpg";
 
 export const PLACEHOLDER_CATEGORIES: Category[] = [
   {
@@ -170,7 +194,7 @@ export const PLACEHOLDER_SERVICES: Service[] = [
     description: "Quick shape, clean-up, and tidy.",
     priceCents: 1000,
     durationMinutes: 15,
-    imageUrl: "https://images.unsplash.com/photo-1589710751893-f9a6770ad71b?auto=format&fit=crop&w=900&q=80",
+    imageUrl: basicEyebrowsImg.src,
     weekdayMask: MON_TO_SAT_MASK,
     isActive: true,
     sortOrder: 1,
@@ -198,7 +222,7 @@ export const PLACEHOLDER_SERVICES: Service[] = [
       "Soft, even brow pigmentation that lasts. +$50 retouch session.",
     priceCents: 35000,
     durationMinutes: 60,
-    imageUrl: "https://images.unsplash.com/photo-1620508467736-0140acd17ce4?auto=format&fit=crop&w=900&q=80",
+    imageUrl: micropigmentationImg.src,
     weekdayMask: MON_TO_SAT_MASK,
     isActive: true,
     sortOrder: 3,
@@ -242,7 +266,7 @@ export const PLACEHOLDER_SERVICES: Service[] = [
       "Full cleanse, exfoliation, and extractions to reset the skin.",
     priceCents: 7500,
     durationMinutes: 60,
-    imageUrl: "https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?auto=format&fit=crop&w=900&q=80",
+    imageUrl: deepCleansingFacialImg.src,
     weekdayMask: MON_TO_SAT_MASK,
     isActive: true,
     sortOrder: 1,
@@ -308,7 +332,7 @@ export const PLACEHOLDER_SERVICES: Service[] = [
     description: "Brightens, hydrates, and de-puffs the under-eye area.",
     priceCents: 7500,
     durationMinutes: 20,
-    imageUrl: "https://images.unsplash.com/photo-1608068811588-3a67006b7489?auto=format&fit=crop&w=900&q=80",
+    imageUrl: underEyesImg.src,
     weekdayMask: MON_TO_SAT_MASK,
     isActive: true,
     sortOrder: 6,
@@ -322,7 +346,7 @@ export const PLACEHOLDER_SERVICES: Service[] = [
       "Collagen-induction therapy for the face. Smoother texture, fewer scars.",
     priceCents: 5000,
     durationMinutes: 45,
-    imageUrl: "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&w=900&q=80",
+    imageUrl: microNeedlingImg.src,
     weekdayMask: MON_TO_SAT_MASK,
     isActive: true,
     sortOrder: 7,
@@ -336,7 +360,7 @@ export const PLACEHOLDER_SERVICES: Service[] = [
       "Full face and neck micro needling — collagen induction over a wider area.",
     priceCents: 10000,
     durationMinutes: 60,
-    imageUrl: "https://images.unsplash.com/photo-1599817878414-43ef36677cf0?auto=format&fit=crop&w=900&q=80",
+    imageUrl: microNeedlingNeckImg.src,
     weekdayMask: MON_TO_SAT_MASK,
     isActive: true,
     sortOrder: 8,
@@ -350,7 +374,7 @@ export const PLACEHOLDER_SERVICES: Service[] = [
       "Lymphatic, sculpting massage for the face and neck. Calming and de-puffing.",
     priceCents: 5000,
     durationMinutes: 40,
-    imageUrl: "https://images.unsplash.com/photo-1706795033728-9232ef548a16?auto=format&fit=crop&w=900&q=80",
+    imageUrl: faceNeckMassageImg.src,
     weekdayMask: MON_TO_SAT_MASK,
     isActive: true,
     sortOrder: 9,
@@ -366,7 +390,7 @@ export const PLACEHOLDER_SERVICES: Service[] = [
       "Laser-based removal of unwanted tattoo or pigment, by session.",
     priceCents: 10000,
     durationMinutes: 30,
-    imageUrl: "https://images.unsplash.com/photo-1568515045052-f9a854d70bfd?auto=format&fit=crop&w=900&q=80",
+    imageUrl: laserTattooRemovalImg.src,
     weekdayMask: MON_TO_SAT_MASK,
     isActive: true,
     sortOrder: 1,
@@ -436,7 +460,7 @@ export const PLACEHOLDER_SERVICES: Service[] = [
     description: "Permanent lip liner for cleaner shape and added definition.",
     priceCents: 10000,
     durationMinutes: 60,
-    imageUrl: "https://images.unsplash.com/photo-1654374504608-67c4cfe65fca?auto=format&fit=crop&w=900&q=80",
+    imageUrl: lipLinerImg.src,
     weekdayMask: MON_TO_SAT_MASK,
     isActive: true,
     sortOrder: 3,
@@ -450,7 +474,7 @@ export const PLACEHOLDER_SERVICES: Service[] = [
       "Laser removal of unwanted lip pigment. Pricing per session, confirmed at consultation.",
     priceCents: 10000,
     durationMinutes: 30,
-    imageUrl: "https://images.unsplash.com/photo-1643684391140-c5056cfd3436?auto=format&fit=crop&w=900&q=80",
+    imageUrl: lipLaserRemovalImg.src,
     weekdayMask: MON_TO_SAT_MASK,
     isActive: true,
     sortOrder: 4,
@@ -465,7 +489,7 @@ export const PLACEHOLDER_SERVICES: Service[] = [
     description: "Natural-looking lift that opens the eyes — no extensions.",
     priceCents: 5000,
     durationMinutes: 60,
-    imageUrl: "https://images.unsplash.com/photo-1735151226446-1d364b4adc2f?auto=format&fit=crop&w=900&q=80",
+    imageUrl: lashLiftImg.src,
     weekdayMask: MON_TO_SAT_MASK,
     isActive: true,
     sortOrder: 1,
@@ -505,7 +529,7 @@ export const PLACEHOLDER_SERVICES: Service[] = [
     description: "Lash tinting for added depth and definition.",
     priceCents: 2000,
     durationMinutes: 25,
-    imageUrl: "https://images.unsplash.com/photo-1677849242177-2a86834456f0?auto=format&fit=crop&w=900&q=80",
+    imageUrl: tintedLashesImg.src,
     weekdayMask: MON_TO_SAT_MASK,
     isActive: true,
     sortOrder: 4,
@@ -533,7 +557,7 @@ export const PLACEHOLDER_SERVICES: Service[] = [
     description: "Quick laser session for the underarm area.",
     priceCents: 5000,
     durationMinutes: 10,
-    imageUrl: "https://images.unsplash.com/photo-1758716021044-37738384c00e?auto=format&fit=crop&w=900&q=80",
+    imageUrl: underArmsLaserImg.src,
     weekdayMask: MON_TO_SAT_MASK,
     isActive: true,
     sortOrder: 2,
@@ -546,7 +570,7 @@ export const PLACEHOLDER_SERVICES: Service[] = [
     description: "Laser hair removal across the full arm.",
     priceCents: 8000,
     durationMinutes: 15,
-    imageUrl: "https://images.unsplash.com/photo-1700760933941-3a06a28fbf47?auto=format&fit=crop&w=900&q=80",
+    imageUrl: fullArmLaserImg.src,
     weekdayMask: MON_TO_SAT_MASK,
     isActive: true,
     sortOrder: 3,
@@ -559,7 +583,7 @@ export const PLACEHOLDER_SERVICES: Service[] = [
     description: "Laser hair removal for the legs, ~30–40 minutes.",
     priceCents: 10000,
     durationMinutes: 40,
-    imageUrl: "https://images.unsplash.com/photo-1685979979782-759cbdd528ee?auto=format&fit=crop&w=900&q=80",
+    imageUrl: legLaserImg.src,
     weekdayMask: MON_TO_SAT_MASK,
     isActive: true,
     sortOrder: 4,
@@ -585,7 +609,7 @@ export const PLACEHOLDER_SERVICES: Service[] = [
     description: "Targeted laser session for the belly or the back.",
     priceCents: 5000,
     durationMinutes: 10,
-    imageUrl: "https://images.unsplash.com/photo-1700760934166-4c766d708139?auto=format&fit=crop&w=900&q=80",
+    imageUrl: bellyBackLaserImg.src,
     weekdayMask: MON_TO_SAT_MASK,
     isActive: true,
     sortOrder: 6,
@@ -598,7 +622,7 @@ export const PLACEHOLDER_SERVICES: Service[] = [
     description: "Full-face laser hair removal session.",
     priceCents: 8000,
     durationMinutes: 15,
-    imageUrl: "https://images.unsplash.com/photo-1731514771613-991a02407132?auto=format&fit=crop&w=900&q=80",
+    imageUrl: faceLaserImg.src,
     weekdayMask: MON_TO_SAT_MASK,
     isActive: true,
     sortOrder: 7,
@@ -611,7 +635,7 @@ export const PLACEHOLDER_SERVICES: Service[] = [
     description: "Quick targeted laser session for the upper lip.",
     priceCents: 2000,
     durationMinutes: 5,
-    imageUrl: "https://images.unsplash.com/photo-1584457361626-06effef61a7c?auto=format&fit=crop&w=900&q=80",
+    imageUrl: moustacheLaserImg.src,
     weekdayMask: MON_TO_SAT_MASK,
     isActive: true,
     sortOrder: 8,
@@ -620,12 +644,12 @@ export const PLACEHOLDER_SERVICES: Service[] = [
     id: "srv-electric-epilation",
     categoryId: "cat-body-laser",
     slug: "electric-epilation",
-    name: "Electric Epilation",
+    name: "Épilation Électrique",
     description:
-      "Electrolysis hair removal, billed at $2 per minute. 30 minutes shown as default — final price set at the session.",
-    priceCents: 6000,
+      "Electrolysis hair removal, billed at $2 per minute. Final price is set by session length.",
+    priceCents: 200,
     durationMinutes: 30,
-    imageUrl: "https://images.unsplash.com/photo-1713085085470-fba013d67e65?auto=format&fit=crop&w=900&q=80",
+    imageUrl: electricEpilationImg.src,
     weekdayMask: MON_TO_SAT_MASK,
     isActive: true,
     sortOrder: 9,
@@ -653,7 +677,7 @@ export const PLACEHOLDER_SERVICES: Service[] = [
     description: "Manicure with an added soak, scrub, and hand massage.",
     priceCents: 2000,
     durationMinutes: 40,
-    imageUrl: "https://images.unsplash.com/photo-1587729927069-ef3b7a5ab9b4?auto=format&fit=crop&w=900&q=80",
+    imageUrl: spaManicureImg.src,
     weekdayMask: MON_TO_SAT_MASK,
     isActive: true,
     sortOrder: 2,
@@ -732,7 +756,7 @@ export const PLACEHOLDER_SERVICES: Service[] = [
       "Russian dry manicure with rubber base and gel color in one session.",
     priceCents: 3500,
     durationMinutes: 90,
-    imageUrl: "https://images.unsplash.com/photo-1618606679166-7f313aa5b26f?auto=format&fit=crop&w=900&q=80",
+    imageUrl: rubberBaseGelishImg.src,
     weekdayMask: MON_TO_SAT_MASK,
     isActive: true,
     sortOrder: 8,
@@ -758,7 +782,7 @@ export const PLACEHOLDER_SERVICES: Service[] = [
     description: "Gel refill on an existing set to keep it fresh and strong.",
     priceCents: 4500,
     durationMinutes: 60,
-    imageUrl: "https://images.unsplash.com/photo-1607779097040-26e80aa78e66?auto=format&fit=crop&w=900&q=80",
+    imageUrl: refillGelImg.src,
     weekdayMask: MON_TO_SAT_MASK,
     isActive: true,
     sortOrder: 10,
@@ -772,7 +796,7 @@ export const PLACEHOLDER_SERVICES: Service[] = [
       "French tips added to any nail service. From $5, depending on the style chosen.",
     priceCents: 500,
     durationMinutes: 15,
-    imageUrl: "https://images.unsplash.com/photo-1735264143075-9694eb02ad86?auto=format&fit=crop&w=900&q=80",
+    imageUrl: frenchImg.src,
     weekdayMask: MON_TO_SAT_MASK,
     isActive: true,
     sortOrder: 11,
@@ -786,7 +810,7 @@ export const PLACEHOLDER_SERVICES: Service[] = [
       "Custom nail art. $2 to $15 depending on the style and detail you choose.",
     priceCents: 200,
     durationMinutes: 15,
-    imageUrl: "https://images.unsplash.com/photo-1571290274554-6a2eaa771e5f?auto=format&fit=crop&w=900&q=80",
+    imageUrl: nailDesignImg.src,
     weekdayMask: MON_TO_SAT_MASK,
     isActive: true,
     sortOrder: 12,
