@@ -20,6 +20,11 @@ export function ServiceCard({ service, categoryName }: Props) {
           <img
             src={service.imageUrl}
             alt={service.name}
+            style={
+              service.imageObjectPosition
+                ? { objectPosition: service.imageObjectPosition }
+                : undefined
+            }
             className="h-full w-full object-cover transition duration-700 group-hover:scale-[1.03]"
           />
         ) : (

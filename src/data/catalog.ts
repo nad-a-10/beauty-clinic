@@ -38,12 +38,19 @@ import legLaserImg from "@/Images/services/leg_laser_removal.jpg";
 import bellyBackLaserImg from "@/Images/services/belly_back_laser_removal.jpg";
 import faceLaserImg from "@/Images/services/face_laser.jpg";
 import moustacheLaserImg from "@/Images/services/mustache_laser.jpg";
-import electricEpilationImg from "@/Images/services/electric_epilation.jpg";
+import electricEpilationImg from "@/Images/services/electric_epilation.jpeg";
 import spaManicureImg from "@/Images/services/spa_manicure.jpg";
 import rubberBaseGelishImg from "@/Images/services/rubber_base_and_gelish.jpg";
 import refillGelImg from "@/Images/services/refill_gel.jpg";
 import frenchImg from "@/Images/services/french.jpg";
 import nailDesignImg from "@/Images/services/design.jpg";
+import microbladingImg from "@/Images/services/microblading.jpeg";
+import scarsTreatmentImg from "@/Images/services/scars_treatment.jpeg";
+import lipNeutralizationImg from "@/Images/services/lip_neutralization.jpeg";
+import eyebrowsCourseImg from "@/Images/services/eyebrows_course.jpeg";
+import lipTattooCourseImg from "@/Images/services/lip_tattoo_course.jpeg";
+import spaManiPediCourseImg from "@/Images/services/spa_meni_pedi_course.jpeg";
+import maniPediGelishCourseImg from "@/Images/services/mani_pedi_gelish_course.jpeg";
 
 export const PLACEHOLDER_CATEGORIES: Category[] = [
   {
@@ -208,7 +215,7 @@ export const PLACEHOLDER_SERVICES: Service[] = [
       "Fine, hair-stroke microblading for natural, defined brows. +$50 retouch session.",
     priceCents: 35000,
     durationMinutes: 60,
-    imageUrl: "https://images.unsplash.com/photo-1651839633408-3fccd671b832?auto=format&fit=crop&w=900&q=80",
+    imageUrl: microbladingImg.src,
     weekdayMask: MON_TO_SAT_MASK,
     isActive: true,
     sortOrder: 2,
@@ -292,7 +299,7 @@ export const PLACEHOLDER_SERVICES: Service[] = [
     description: "Targeted treatment to soften scarring and improve texture.",
     priceCents: 10000,
     durationMinutes: 30,
-    imageUrl: "https://images.unsplash.com/photo-1555820585-c5ae44394b79?auto=format&fit=crop&w=900&q=80",
+    imageUrl: scarsTreatmentImg.src,
     weekdayMask: MON_TO_SAT_MASK,
     isActive: true,
     sortOrder: 3,
@@ -447,7 +454,7 @@ export const PLACEHOLDER_SERVICES: Service[] = [
       "Neutralizes darker pigment in the lips for a balanced, even tone.",
     priceCents: 15000,
     durationMinutes: 60,
-    imageUrl: "https://images.unsplash.com/photo-1762114468986-e9b56e7d9d97?auto=format&fit=crop&w=900&q=80",
+    imageUrl: lipNeutralizationImg.src,
     weekdayMask: MON_TO_SAT_MASK,
     isActive: true,
     sortOrder: 2,
@@ -797,6 +804,7 @@ export const PLACEHOLDER_SERVICES: Service[] = [
     priceCents: 500,
     durationMinutes: 15,
     imageUrl: frenchImg.src,
+    imageObjectPosition: "center 22%",
     weekdayMask: MON_TO_SAT_MASK,
     isActive: true,
     sortOrder: 11,
@@ -839,7 +847,7 @@ export const PLACEHOLDER_SERVICES: Service[] = [
       "5-session package combining spa manicure and spa pedicure. Private $200 / In group $150 per person.",
     priceCents: 20000,
     durationMinutes: 120,
-    imageUrl: "https://images.unsplash.com/photo-1758225490983-0fae7961e425?auto=format&fit=crop&w=900&q=80",
+    imageUrl: spaManiPediCourseImg.src,
     weekdayMask: MON_TO_SAT_MASK,
     isActive: true,
     sortOrder: 4,
@@ -853,7 +861,7 @@ export const PLACEHOLDER_SERVICES: Service[] = [
       "5 sessions of Russian manicure and pedicure with gel color. Private $250 / In group $180 per person.",
     priceCents: 25000,
     durationMinutes: 150,
-    imageUrl: "https://images.unsplash.com/photo-1566113519662-7807a42cc50d?auto=format&fit=crop&w=900&q=80",
+    imageUrl: maniPediGelishCourseImg.src,
     weekdayMask: MON_TO_SAT_MASK,
     isActive: true,
     sortOrder: 5,
@@ -925,7 +933,7 @@ export const PLACEHOLDER_SERVICES: Service[] = [
       "2-month course — 16 sessions covering microblading, micropigmentation, and shadow brows.",
     priceCents: 110000,
     durationMinutes: 180,
-    imageUrl: "https://images.unsplash.com/photo-1638959882708-9503b1cd595f?auto=format&fit=crop&w=900&q=80",
+    imageUrl: eyebrowsCourseImg.src,
     weekdayMask: MON_TO_SAT_MASK,
     isActive: true,
     sortOrder: 2,
@@ -939,7 +947,7 @@ export const PLACEHOLDER_SERVICES: Service[] = [
       "2-month course — 16 sessions covering lip blush, neutralization, and lip liner.",
     priceCents: 110000,
     durationMinutes: 180,
-    imageUrl: "https://images.unsplash.com/photo-1598300188904-6287d52746ad?auto=format&fit=crop&w=900&q=80",
+    imageUrl: lipTattooCourseImg.src,
     weekdayMask: MON_TO_SAT_MASK,
     isActive: true,
     sortOrder: 3,

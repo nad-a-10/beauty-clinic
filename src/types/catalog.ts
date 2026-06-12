@@ -39,6 +39,8 @@ export interface Service {
   priceCents: number;
   durationMinutes: number;
   imageUrl: string | null;
+  /** CSS object-position for the card image, when the default center crop is wrong. */
+  imageObjectPosition?: string;
   weekdayMask: WeekdayMask;
   isActive: boolean;
   sortOrder: number;
