@@ -3,6 +3,7 @@ import { z } from "zod";
 const Server = z.object({
   SUPABASE_SERVICE_ROLE_KEY: z.string().optional(),
   OWNER_WHATSAPP_E164: z.string().optional(),
+  OWNER_PORTAL_PASSWORD: z.string().optional(),
   CRON_SECRET: z.string().optional(),
   NOTIFIER_KIND: z.enum(["whatsapp-link", "twilio"]).default("whatsapp-link"),
   TWILIO_ACCOUNT_SID: z.string().optional(),
@@ -19,6 +20,7 @@ const Public = z.object({
 export const serverEnv = Server.parse({
   SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY,
   OWNER_WHATSAPP_E164: process.env.OWNER_WHATSAPP_E164,
+  OWNER_PORTAL_PASSWORD: process.env.OWNER_PORTAL_PASSWORD,
   CRON_SECRET: process.env.CRON_SECRET,
   NOTIFIER_KIND: process.env.NOTIFIER_KIND,
   TWILIO_ACCOUNT_SID: process.env.TWILIO_ACCOUNT_SID,

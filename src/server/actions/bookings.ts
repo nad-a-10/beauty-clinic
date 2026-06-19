@@ -8,6 +8,7 @@ import { siteConfig } from "@/config/site";
 import { generateSlots } from "@/lib/booking/slots";
 import { countOverlaps } from "@/lib/booking/conflicts";
 import { poolForCategoryId, poolForServiceId } from "@/lib/booking/resources";
+import { isOwnerAuthed, signInOwner } from "@/lib/booking/owner-auth";
 import { bookingFormSchema } from "@/lib/booking/schema";
 import { getNotifier } from "@/lib/booking/notifier";
 import { createSupabaseAdmin } from "@/lib/supabase/server";
@@ -392,6 +393,7 @@ export type RespondToBookingResult =
       ok: false;
       reason:
         | "not_configured"
+        | "unauthorized"
         | "not_found"
         | "invalid_action"
         | "terminal_state"
@@ -401,10 +403,27 @@ export type RespondToBookingResult =
       currentStatus?: BookingStatus;
     };
 
+export async function authenticateOwner(
+  password: string,
+): Promise<{ ok: boolean }> {
+  const ok = await signInOwner(password);
+  return { ok };
+}
+
 export async function respondToBooking(
   token: string,
   action: "confirm" | "deny",
 ): Promise<RespondToBookingResult> {
+  // Only the owner (holding the portal password) may confirm/deny — the
+  // customer can see the token link but must never be able to act on it.
+  if (!(await isOwnerAuthed())) {
+    return {
+      ok: false,
+      reason: "unauthorized",
+      message: "Owner sign-in required to manage this booking.",
+    };
+  }
+
   if (action !== "confirm" && action !== "deny") {
     return {
       ok: false,
@@ -493,5 +512,87 @@ export async function respondToBooking(
   }
 
   return { ok: true, status: newStatus };
+}
+
+// ── Owner dashboard: list confirmed bookings ───────────────────
+
+export type OwnerBookingListItem = {
+  id: string;
+  scheduledAt: string;
+  endsAt: string;
+  customerName: string;
+  customerPhone: string;
+  serviceName: string;
+  durationMinutes: number;
+  priceCents: number;
+};
+
+export type ListConfirmedBookingsResult =
+  | { ok: true; bookings: OwnerBookingListItem[] }
+  | { ok: false; reason: "unauthorized" | "not_configured"; message: string };
+
+/**
+ * Upcoming confirmed bookings (ends in the future), earliest first. Owner-only.
+ */
+export async function listConfirmedBookings(): Promise<ListConfirmedBookingsResult> {
+  if (!(await isOwnerAuthed())) {
+    return {
+      ok: false,
+      reason: "unauthorized",
+      message: "Owner sign-in required.",
+    };
+  }
+
+  const admin = await createSupabaseAdmin();
+  if (!admin) {
+    return {
+      ok: false,
+      reason: "not_configured",
+      message: "The database isn't configured.",
+    };
+  }
+
+  const nowIso = new Date().toISOString();
+  const { data, error } = await admin
+    .from("bookings")
+    .select(
+      "id, scheduled_at, ends_at, customer_name, customer_phone, service_name, service_duration_minutes, service_price_cents",
+    )
+    .eq("status", "confirmed")
+    .gte("ends_at", nowIso)
+    .order("scheduled_at", { ascending: true });
+
+  if (error) {
+    console.error("[bookings] listConfirmedBookings error", error);
+    return {
+      ok: false,
+      reason: "not_configured",
+      message: "Couldn't load bookings.",
+    };
+  }
+
+  type Row = {
+    id: string;
+    scheduled_at: string;
+    ends_at: string;
+    customer_name: string;
+    customer_phone: string;
+    service_name: string;
+    service_duration_minutes: number;
+    service_price_cents: number;
+  };
+
+  const bookings = ((data as Row[] | null) ?? []).map((row) => ({
+    id: row.id,
+    scheduledAt: row.scheduled_at,
+    endsAt: row.ends_at,
+    customerName: row.customer_name,
+    customerPhone: row.customer_phone,
+    serviceName: row.service_name,
+    durationMinutes: row.service_duration_minutes,
+    priceCents: row.service_price_cents,
+  }));
+
+  return { ok: true, bookings };
 }
 

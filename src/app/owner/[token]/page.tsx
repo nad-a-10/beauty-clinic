@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowLeft, AlertCircle } from "lucide-react";
+import { ArrowLeft, AlertCircle, CalendarCheck2 } from "lucide-react";
 import { OwnerActions } from "@/components/owner/OwnerActions";
 import { OwnerBookingCard } from "@/components/owner/OwnerBookingCard";
+import { OwnerLogin } from "@/components/owner/OwnerLogin";
 import { siteConfig } from "@/config/site";
 import { findBookingByToken } from "@/server/actions/bookings";
+import { isOwnerAuthed, ownerPortalConfigured } from "@/lib/booking/owner-auth";
 
 export const metadata: Metadata = {
   title: "Manage Booking",
@@ -18,7 +20,9 @@ export default async function OwnerManagePage({
   params: Promise<{ token: string }>;
 }) {
   const { token } = await params;
-  const result = await findBookingByToken(token);
+  const portalConfigured = ownerPortalConfigured();
+  const authed = portalConfigured ? await isOwnerAuthed() : false;
+  const result = authed ? await findBookingByToken(token) : null;
 
   return (
     <main className="min-h-screen bg-ivory bg-grain px-6 py-12 md:px-10 md:py-20">
@@ -41,7 +45,11 @@ export default async function OwnerManagePage({
         </header>
 
         <div className="mt-10">
-          {!result.ok && result.reason === "not_configured" ? (
+          {!portalConfigured ? (
+            <PortalNotConfiguredPanel />
+          ) : !authed || !result ? (
+            <OwnerLogin />
+          ) : !result.ok && result.reason === "not_configured" ? (
             <NotConfiguredPanel />
           ) : !result.ok ? (
             <NotFoundPanel />
@@ -61,11 +69,41 @@ export default async function OwnerManagePage({
                   initialStatus={result.booking.status}
                 />
               )}
+
+              <Link
+                href="/owner"
+                className="inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.24em] text-muted transition hover:text-rose-600"
+              >
+                <CalendarCheck2 className="h-3.5 w-3.5" aria-hidden />
+                View all confirmed bookings
+              </Link>
             </div>
           )}
         </div>
       </div>
     </main>
+  );
+}
+
+function PortalNotConfiguredPanel() {
+  return (
+    <div className="rounded-3xl border border-amber-200 bg-amber-50 px-8 py-10">
+      <div className="flex items-center gap-3">
+        <AlertCircle className="h-5 w-5 text-amber-700" aria-hidden />
+        <span className="text-[11px] uppercase tracking-[0.28em] text-amber-900">
+          Owner portal not configured
+        </span>
+      </div>
+      <h2 className="mt-4 font-display text-2xl text-charcoal">
+        Set an owner password to manage bookings
+      </h2>
+      <p className="mt-3 text-sm leading-relaxed text-amber-900/80">
+        Add <code className="font-mono">OWNER_PORTAL_PASSWORD</code> to your
+        environment variables, then redeploy. Until it&apos;s set, no one can
+        confirm or deny bookings from this link — including the customer who
+        received it.
+      </p>
+    </div>
   );
 }
 
