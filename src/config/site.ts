@@ -5,7 +5,7 @@ export const siteConfig = {
   tagline: "Where Care Meets Craft",
   description:
     "Laudy Maamary Beauty Center, Zalka, Lebanon. Permanent makeup, facials, lashes, body care, and considered beauty rituals — twenty-five years of practice in one quiet room.",
-  url: "https://example.com",
+  url: "https://laudymaamary.com",
   contact: {
     phoneDisplay: "+961 3 542 197",
     whatsappE164: "+9613542197",

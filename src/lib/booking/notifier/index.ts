@@ -1,4 +1,4 @@
-import { publicEnv, serverEnv } from "@/config/env";
+import { isSupabaseConfigured, publicEnv, serverEnv } from "@/config/env";
 import { siteConfig } from "@/config/site";
 import type { BookingWithService } from "@/types/booking";
 import { WhatsAppLinkNotifier } from "./whatsapp-link";
@@ -41,14 +41,18 @@ export function buildOwnerMessage(booking: BookingWithService): string {
     lines.push("", `Notes:    ${booking.notes}`);
   }
 
-  const baseUrl = publicEnv.NEXT_PUBLIC_SITE_URL.replace(/\/$/, "");
-  const manageUrl = `${baseUrl}/owner/${booking.ownerToken}`;
+  if (isSupabaseConfigured) {
+    const baseUrl = publicEnv.NEXT_PUBLIC_SITE_URL.replace(/\/$/, "");
+    const manageUrl = `${baseUrl}/owner/${booking.ownerToken}`;
 
-  lines.push("", `Manage:   ${manageUrl}`);
-  lines.push(
-    "",
-    "Tap the link above to confirm or deny. The slot is held for 24h while you decide.",
-  );
+    lines.push("", `Manage:   ${manageUrl}`);
+    lines.push(
+      "",
+      "Tap the link above to confirm or deny. The slot is held for 24h while you decide.",
+    );
+  } else {
+    lines.push("", "Reply to the customer to confirm or reschedule.");
+  }
 
   return lines.join("\n");
 }

@@ -178,6 +178,9 @@ export async function createBooking(
       .from("bookings")
       .insert({
         service_id: service.id,
+        service_name: service.name,
+        service_price_cents: service.priceCents,
+        service_duration_minutes: service.durationMinutes,
         customer_name: customerName,
         customer_phone: customerPhone,
         customer_email: customerEmail || null,
@@ -315,7 +318,7 @@ export async function findBookingByToken(
   const { data, error } = await admin
     .from("bookings")
     .select(
-      "id, status, scheduled_at, ends_at, customer_name, customer_phone, customer_email, notes, hold_expires_at, services!inner(name, duration_minutes, price_cents)",
+      "id, status, scheduled_at, ends_at, customer_name, customer_phone, customer_email, notes, hold_expires_at, service_name, service_duration_minutes, service_price_cents",
     )
     .eq("owner_token", token)
     .maybeSingle();
@@ -328,7 +331,7 @@ export async function findBookingByToken(
     return { ok: false, reason: "not_found", message: "Booking not found." };
   }
 
-  type JoinedRow = {
+  type BookingRow = {
     id: string;
     status: BookingStatus;
     scheduled_at: string;
@@ -338,14 +341,12 @@ export async function findBookingByToken(
     customer_email: string | null;
     notes: string | null;
     hold_expires_at: string;
-    services: {
-      name: string;
-      duration_minutes: number;
-      price_cents: number;
-    };
+    service_name: string;
+    service_duration_minutes: number;
+    service_price_cents: number;
   };
 
-  const row = data as unknown as JoinedRow;
+  const row = data as unknown as BookingRow;
 
   return {
     ok: true,
@@ -359,9 +360,9 @@ export async function findBookingByToken(
       customerEmail: row.customer_email,
       notes: row.notes,
       holdExpiresAt: row.hold_expires_at,
-      serviceName: row.services.name,
-      durationMinutes: row.services.duration_minutes,
-      priceCents: row.services.price_cents,
+      serviceName: row.service_name,
+      durationMinutes: row.service_duration_minutes,
+      priceCents: row.service_price_cents,
     },
   };
 }
