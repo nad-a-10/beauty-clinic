@@ -21,6 +21,9 @@ export const siteConfig = {
     weekdays: "Mon – Sat · 09:00 – 19:00",
     sunday: "Sunday · select services by appointment",
   },
+  // The clinic's timezone. All booking slots and times are computed and
+  // displayed in this zone, regardless of the visitor's or server's locale.
+  timeZone: "Asia/Beirut",
   nav: [
     { label: "Home", href: "/" },
     { label: "Services", href: "/services" },

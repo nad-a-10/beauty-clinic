@@ -1,4 +1,4 @@
-import { format } from "date-fns";
+import { formatInTimeZone } from "date-fns-tz";
 import {
   CalendarCheck2,
   Clock,
@@ -9,6 +9,7 @@ import {
   User,
 } from "lucide-react";
 import { cn, formatCurrency, formatDuration } from "@/lib/utils";
+import { siteConfig } from "@/config/site";
 import type { OwnerBookingView } from "@/server/actions/bookings";
 import type { BookingStatus } from "@/types/booking";
 
@@ -77,10 +78,11 @@ export function OwnerBookingCard({ booking }: { booking: OwnerBookingView }) {
 
       <dl className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
         <Row icon={<CalendarCheck2 className="h-4 w-4" />} label="Date">
-          {format(start, "EEEE, MMMM d, yyyy")}
+          {formatInTimeZone(start, siteConfig.timeZone, "EEEE, MMMM d, yyyy")}
         </Row>
         <Row icon={<Clock className="h-4 w-4" />} label="Time">
-          {format(start, "h:mm a")} – {format(end, "h:mm a")} ·{" "}
+          {formatInTimeZone(start, siteConfig.timeZone, "h:mm a")} –{" "}
+          {formatInTimeZone(end, siteConfig.timeZone, "h:mm a")} ·{" "}
           {formatDuration(booking.durationMinutes)}
         </Row>
         <Row icon={<User className="h-4 w-4" />} label="Customer">

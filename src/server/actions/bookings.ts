@@ -1,10 +1,11 @@
 "use server";
 
-import { addMinutes } from "date-fns";
+import { addDays, addMinutes } from "date-fns";
+import { formatInTimeZone, fromZonedTime } from "date-fns-tz";
 import { findServiceBySlug } from "@/data/catalog";
 import { isSupabaseConfigured } from "@/config/env";
 import { siteConfig } from "@/config/site";
-import { dayHoursFromHHMM, generateSlots } from "@/lib/booking/slots";
+import { generateSlots } from "@/lib/booking/slots";
 import { countOverlaps } from "@/lib/booking/conflicts";
 import { poolForCategoryId, poolForServiceId } from "@/lib/booking/resources";
 import { bookingFormSchema } from "@/lib/booking/schema";
@@ -18,6 +19,8 @@ import type {
 import { isOpenOn } from "@/types/catalog";
 
 const DEFAULT_GRANULARITY = 15;
+const CLINIC_TZ = siteConfig.timeZone;
+const DAY_KEY_RE = /^\d{4}-\d{2}-\d{2}$/;
 
 const CLINIC_HOURS_HHMM: Record<number, [string, string] | null> = {
   0: null,
@@ -31,29 +34,42 @@ const CLINIC_HOURS_HHMM: Record<number, [string, string] | null> = {
 
 const SUNDAY_HOURS_HHMM: [string, string] = ["11:00", "17:00"];
 
-function clinicHoursForDate(date: Date, weekdayMask: number) {
-  const dow = date.getDay();
+/**
+ * Open/close instants for a clinic calendar day (yyyy-MM-dd), anchored to the
+ * clinic timezone so a "09:00" open is 09:00 in Beirut, not on the server.
+ */
+function clinicHoursForDay(
+  dayKey: string,
+  weekdayMask: number,
+): { open: Date; close: Date } | null {
+  // Day-of-week of the calendar date itself (noon UTC avoids tz edge shifts).
+  const dow = new Date(`${dayKey}T12:00:00Z`).getUTCDay();
   if (!isOpenOn(weekdayMask, dow)) return null;
-  if (dow === 0) return dayHoursFromHHMM(...SUNDAY_HOURS_HHMM);
-  const hhmm = CLINIC_HOURS_HHMM[dow];
+  const hhmm = dow === 0 ? SUNDAY_HOURS_HHMM : CLINIC_HOURS_HHMM[dow];
   if (!hhmm) return null;
-  return dayHoursFromHHMM(...hhmm);
+  return {
+    open: fromZonedTime(`${dayKey}T${hhmm[0]}:00`, CLINIC_TZ),
+    close: fromZonedTime(`${dayKey}T${hhmm[1]}:00`, CLINIC_TZ),
+  };
+}
+
+/** The clinic calendar day (yyyy-MM-dd) that a given instant falls on. */
+function clinicDayKey(instant: Date): string {
+  return formatInTimeZone(instant, CLINIC_TZ, "yyyy-MM-dd");
 }
 
 type DayBooking = BookingTimeRange & { serviceId: string };
 
 /**
- * Every active booking for the given day, across all services. Pool filtering
+ * Every active booking for the clinic day, across all services. Pool filtering
  * happens in-memory afterwards so the single-room lock spans every service.
  */
-async function fetchDayBookings(date: Date): Promise<DayBooking[]> {
+async function fetchDayBookings(dayKey: string): Promise<DayBooking[]> {
   const admin = await createSupabaseAdmin();
   if (!admin) return [];
 
-  const dayStart = new Date(date);
-  dayStart.setHours(0, 0, 0, 0);
-  const dayEnd = new Date(dayStart);
-  dayEnd.setDate(dayEnd.getDate() + 1);
+  const dayStart = fromZonedTime(`${dayKey}T00:00:00`, CLINIC_TZ);
+  const dayEnd = addDays(dayStart, 1);
 
   const { data, error } = await admin
     .from("bookings")
@@ -87,26 +103,25 @@ function bookingsInPool(
 
 export async function getAvailableSlots(
   serviceSlug: string,
-  isoDate: string,
+  dayKey: string,
 ): Promise<{ slots: string[]; closed: boolean }> {
   const service = findServiceBySlug(serviceSlug);
   if (!service) return { slots: [], closed: true };
 
-  const date = new Date(isoDate);
-  if (Number.isNaN(date.getTime())) return { slots: [], closed: true };
+  if (!DAY_KEY_RE.test(dayKey)) return { slots: [], closed: true };
 
-  const hours = clinicHoursForDate(date, service.weekdayMask);
+  const hours = clinicHoursForDay(dayKey, service.weekdayMask);
   if (!hours) return { slots: [], closed: true };
 
   const pool = poolForCategoryId(service.categoryId);
-  const dayBookings = await fetchDayBookings(date);
+  const dayBookings = await fetchDayBookings(dayKey);
   const existingBookings = bookingsInPool(dayBookings, pool.key);
 
   const slots = generateSlots({
+    open: hours.open,
+    close: hours.close,
     serviceDurationMin: service.durationMinutes,
     granularityMin: DEFAULT_GRANULARITY,
-    hoursForDay: hours,
-    date,
     existingBookings,
     capacity: pool.capacity,
   });
@@ -143,10 +158,14 @@ export async function createBooking(
   }
 
   const start = new Date(scheduledAtIso);
+  if (Number.isNaN(start.getTime())) {
+    return { ok: false, reason: "validation", message: "Invalid time." };
+  }
   const end = addMinutes(start, service.durationMinutes);
 
-  const hours = clinicHoursForDate(start, service.weekdayMask);
-  if (!hours) {
+  const dayKey = clinicDayKey(start);
+  const hours = clinicHoursForDay(dayKey, service.weekdayMask);
+  if (!hours || start < hours.open || end > hours.close) {
     return {
       ok: false,
       reason: "out_of_hours",
@@ -155,7 +174,7 @@ export async function createBooking(
   }
 
   const pool = poolForCategoryId(service.categoryId);
-  const dayBookings = await fetchDayBookings(start);
+  const dayBookings = await fetchDayBookings(dayKey);
   const existingBookings = bookingsInPool(dayBookings, pool.key);
   if (countOverlaps({ start, end }, existingBookings) >= pool.capacity) {
     return {

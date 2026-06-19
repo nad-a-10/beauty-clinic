@@ -1,3 +1,4 @@
+import { formatInTimeZone } from "date-fns-tz";
 import { isSupabaseConfigured, publicEnv, serverEnv } from "@/config/env";
 import { siteConfig } from "@/config/site";
 import type { BookingWithService } from "@/types/booking";
@@ -14,16 +15,12 @@ export interface BookingNotifier {
 
 export function buildOwnerMessage(booking: BookingWithService): string {
   const when = new Date(booking.scheduledAt);
-  const formattedDate = when.toLocaleString("en-US", {
-    weekday: "long",
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-  });
-  const formattedTime = when.toLocaleString("en-US", {
-    hour: "numeric",
-    minute: "2-digit",
-  });
+  const formattedDate = formatInTimeZone(
+    when,
+    siteConfig.timeZone,
+    "EEEE, MMMM d, yyyy",
+  );
+  const formattedTime = formatInTimeZone(when, siteConfig.timeZone, "h:mm a");
 
   const lines = [
     `New booking request from ${siteConfig.name}`,

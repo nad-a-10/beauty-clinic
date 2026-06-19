@@ -1,8 +1,10 @@
 "use client";
 
 import { format } from "date-fns";
+import { formatInTimeZone } from "date-fns-tz";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
+import { siteConfig } from "@/config/site";
 import { getAvailableSlots } from "@/server/actions/bookings";
 
 interface Props {
@@ -26,7 +28,7 @@ export function TimeSlotPicker({
     if (!selectedDate) return;
     let cancelled = false;
     setLoading(true);
-    getAvailableSlots(serviceSlug, selectedDate.toISOString())
+    getAvailableSlots(serviceSlug, format(selectedDate, "yyyy-MM-dd"))
       .then((res) => {
         if (cancelled) return;
         setSlots(res.slots);
@@ -87,7 +89,11 @@ export function TimeSlotPicker({
             className="grid grid-cols-3 gap-2 xs:grid-cols-4 sm:grid-cols-5 md:grid-cols-6"
           >
             {slots.map((iso) => {
-              const time = format(new Date(iso), "h:mm a");
+              const time = formatInTimeZone(
+                new Date(iso),
+                siteConfig.timeZone,
+                "h:mm a",
+              );
               const selected = iso === selectedSlotIso;
               return (
                 <button

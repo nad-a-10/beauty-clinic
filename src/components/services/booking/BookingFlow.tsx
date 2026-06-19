@@ -1,6 +1,6 @@
 "use client";
 
-import { format } from "date-fns";
+import { formatInTimeZone } from "date-fns-tz";
 import {
   ArrowUpRight,
   CalendarCheck2,
@@ -23,6 +23,7 @@ import {
   type BookingFormValues,
 } from "@/lib/booking/schema";
 import { createBooking } from "@/server/actions/bookings";
+import { siteConfig } from "@/config/site";
 import type { ServiceWithCategory } from "@/types/catalog";
 
 interface Props {
@@ -315,10 +316,10 @@ function BookingSummary({
               {slot ? (
                 <>
                   <span className="block">
-                    {format(slot, "EEEE, MMM d")}
+                    {formatInTimeZone(slot, siteConfig.timeZone, "EEEE, MMM d")}
                   </span>
                   <span className="block text-xs text-muted">
-                    {format(slot, "h:mm a")}
+                    {formatInTimeZone(slot, siteConfig.timeZone, "h:mm a")}
                   </span>
                 </>
               ) : (
@@ -427,9 +428,11 @@ function BookingSuccess({
             Time
           </p>
           <p className="mt-1 font-display text-xl text-charcoal">
-            {format(slot, "EEEE, MMM d")}
+            {formatInTimeZone(slot, siteConfig.timeZone, "EEEE, MMM d")}
           </p>
-          <p className="mt-1 text-xs text-muted">{format(slot, "h:mm a")}</p>
+          <p className="mt-1 text-xs text-muted">
+            {formatInTimeZone(slot, siteConfig.timeZone, "h:mm a")}
+          </p>
         </div>
       </div>
 

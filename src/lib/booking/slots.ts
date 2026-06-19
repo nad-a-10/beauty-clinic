@@ -1,16 +1,13 @@
-import { addMinutes, isBefore, isEqual } from "date-fns";
+import { addMinutes } from "date-fns";
 import type { BookingTimeRange } from "@/types/booking";
 
-export interface DayHours {
-  openMinutes: number;
-  closeMinutes: number;
-}
-
 export interface GenerateSlotsArgs {
+  /** First bookable instant of the day (clinic open time, as a UTC instant). */
+  open: Date;
+  /** Closing instant of the day (a slot must end at or before this). */
+  close: Date;
   serviceDurationMin: number;
   granularityMin: number;
-  hoursForDay: DayHours | null;
-  date: Date;
   existingBookings: BookingTimeRange[];
   /**
    * How many bookings may overlap a slot before it's full. Defaults to 1
@@ -19,40 +16,30 @@ export interface GenerateSlotsArgs {
   capacity?: number;
 }
 
-function setMinutesOnDay(base: Date, minutes: number): Date {
-  const d = new Date(base);
-  d.setHours(0, 0, 0, 0);
-  d.setMinutes(minutes);
-  return d;
-}
-
 function rangesOverlap(a: BookingTimeRange, b: BookingTimeRange): boolean {
-  return isBefore(a.start, b.end) && isBefore(b.start, a.end);
+  return a.start < b.end && b.start < a.end;
 }
 
 export function generateSlots(args: GenerateSlotsArgs): Date[] {
   const {
+    open,
+    close,
     serviceDurationMin,
     granularityMin,
-    hoursForDay,
-    date,
     existingBookings,
     capacity = 1,
   } = args;
 
-  if (!hoursForDay) return [];
   if (granularityMin <= 0) return [];
   if (serviceDurationMin <= 0) return [];
   if (capacity <= 0) return [];
 
-  const open = setMinutesOnDay(date, hoursForDay.openMinutes);
-  const close = setMinutesOnDay(date, hoursForDay.closeMinutes);
-  const lastValidStart = addMinutes(close, -serviceDurationMin);
+  const lastValidStart = addMinutes(close, -serviceDurationMin).getTime();
 
   const slots: Date[] = [];
   let cursor = open;
 
-  while (isBefore(cursor, lastValidStart) || isEqual(cursor, lastValidStart)) {
+  while (cursor.getTime() <= lastValidStart) {
     const candidate: BookingTimeRange = {
       start: cursor,
       end: addMinutes(cursor, serviceDurationMin),
@@ -75,15 +62,4 @@ export function parseHHMM(value: string): number {
     throw new Error(`Invalid HH:MM string: ${value}`);
   }
   return h * 60 + m;
-}
-
-export function dayHoursFromHHMM(
-  open: string | null,
-  close: string | null,
-): DayHours | null {
-  if (!open || !close) return null;
-  return {
-    openMinutes: parseHHMM(open),
-    closeMinutes: parseHHMM(close),
-  };
 }
