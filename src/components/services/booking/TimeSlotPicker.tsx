@@ -5,7 +5,7 @@ import { formatInTimeZone } from "date-fns-tz";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { siteConfig } from "@/config/site";
-import { getAvailableSlots } from "@/server/actions/bookings";
+import { getAvailableSlots, type AvailableSlot } from "@/server/actions/bookings";
 
 interface Props {
   serviceSlug: string;
@@ -20,7 +20,7 @@ export function TimeSlotPicker({
   selectedSlotIso,
   onSelect,
 }: Props) {
-  const [slots, setSlots] = useState<string[]>([]);
+  const [slots, setSlots] = useState<AvailableSlot[]>([]);
   const [closed, setClosed] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -88,25 +88,31 @@ export function TimeSlotPicker({
             aria-label="Available times"
             className="grid grid-cols-3 gap-2 xs:grid-cols-4 sm:grid-cols-5 md:grid-cols-6"
           >
-            {slots.map((iso) => {
+            {slots.map((slot) => {
               const time = formatInTimeZone(
-                new Date(iso),
+                new Date(slot.iso),
                 siteConfig.timeZone,
                 "h:mm a",
               );
-              const selected = iso === selectedSlotIso;
+              const selected = slot.iso === selectedSlotIso;
               return (
                 <button
-                  key={iso}
+                  key={slot.iso}
                   type="button"
                   role="radio"
                   aria-checked={selected}
-                  onClick={() => onSelect(iso)}
+                  disabled={!slot.available}
+                  title={
+                    slot.available ? undefined : "Unavailable — overlaps another booking"
+                  }
+                  onClick={() => slot.available && onSelect(slot.iso)}
                   className={cn(
                     "rounded-2xl border px-2 py-2.5 text-xs font-medium transition sm:px-3 sm:py-3 sm:text-sm",
-                    selected
-                      ? "border-rose-500 bg-rose-500 text-white shadow-soft"
-                      : "border-line/70 bg-ivory text-charcoal hover:border-rose-300 hover:bg-rose-50",
+                    !slot.available
+                      ? "cursor-not-allowed border-dashed border-line/60 bg-ivory/40 text-muted/50 line-through"
+                      : selected
+                        ? "border-rose-500 bg-rose-500 text-white shadow-soft"
+                        : "border-line/70 bg-ivory text-charcoal hover:border-rose-300 hover:bg-rose-50",
                   )}
                 >
                   {time}

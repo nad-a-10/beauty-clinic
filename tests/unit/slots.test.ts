@@ -1,7 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { formatInTimeZone } from "date-fns-tz";
-import { fromZonedTime } from "date-fns-tz";
-import { generateSlots } from "@/lib/booking/slots";
+import { formatInTimeZone, fromZonedTime } from "date-fns-tz";
+import { generateSlots, type SlotAvailability } from "@/lib/booking/slots";
 
 const TZ = "Asia/Beirut";
 
@@ -11,6 +10,14 @@ const close = fromZonedTime("2026-05-04T19:00:00", TZ);
 
 function hhmm(d: Date) {
   return formatInTimeZone(d, TZ, "HH:mm");
+}
+
+function times(slots: SlotAvailability[]) {
+  return slots.map((s) => hhmm(s.start));
+}
+
+function availabilityAt(slots: SlotAvailability[], time: string) {
+  return slots.find((s) => hhmm(s.start) === time)?.available;
 }
 
 describe("generateSlots", () => {
@@ -35,9 +42,12 @@ describe("generateSlots", () => {
       existingBookings: [],
     });
 
-    expect(hhmm(slots[0])).toBe("09:00");
+    const t = times(slots);
+    expect(t[0]).toBe("09:00");
     // 60-min service: last start that ends by 19:00 is 18:00.
-    expect(hhmm(slots[slots.length - 1])).toBe("18:00");
+    expect(t[t.length - 1]).toBe("18:00");
+    // No bookings → everything available.
+    expect(slots.every((s) => s.available)).toBe(true);
   });
 
   it("produces 15-minute granularity from open to last fit", () => {
@@ -49,12 +59,12 @@ describe("generateSlots", () => {
       existingBookings: [],
     });
 
-    expect(hhmm(slots[0])).toBe("09:00");
-    // last 30-min slot fits when starting at 18:30
-    expect(hhmm(slots[slots.length - 1])).toBe("18:30");
+    const t = times(slots);
+    expect(t[0]).toBe("09:00");
+    expect(t[t.length - 1]).toBe("18:30");
   });
 
-  it("excludes slots that overlap an existing booking (capacity 1)", () => {
+  it("marks overlapping slots unavailable but still returns them", () => {
     const blocked = {
       start: fromZonedTime("2026-05-04T12:00:00", TZ),
       end: fromZonedTime("2026-05-04T13:30:00", TZ),
@@ -67,15 +77,16 @@ describe("generateSlots", () => {
       existingBookings: [blocked],
     });
 
-    const times = slots.map(hhmm);
-    expect(times).not.toContain("12:00");
-    // 11:30 + 60 = 12:30 still overlaps blocked range, must also be excluded
-    expect(times).not.toContain("11:30");
-    // 13:30 + 60 = 14:30 is fine
-    expect(times).toContain("13:30");
+    // The slots are kept (for display) but flagged.
+    expect(times(slots)).toContain("12:00");
+    expect(availabilityAt(slots, "12:00")).toBe(false);
+    // 11:30 + 60 = 12:30 still overlaps the blocked range.
+    expect(availabilityAt(slots, "11:30")).toBe(false);
+    // 13:30 + 60 = 14:30 is free.
+    expect(availabilityAt(slots, "13:30")).toBe(true);
   });
 
-  it("treats touching boundaries as non-overlapping", () => {
+  it("treats touching boundaries as available", () => {
     const blocked = {
       start: fromZonedTime("2026-05-04T11:00:00", TZ),
       end: fromZonedTime("2026-05-04T12:00:00", TZ),
@@ -88,7 +99,7 @@ describe("generateSlots", () => {
       existingBookings: [blocked],
     });
 
-    expect(slots.map(hhmm)).toContain("12:00");
+    expect(availabilityAt(slots, "12:00")).toBe(true);
   });
 
   it("allows overlap up to capacity (nails-style pool)", () => {
@@ -106,6 +117,6 @@ describe("generateSlots", () => {
       capacity: 2,
     });
 
-    expect(slots.map(hhmm)).toContain("12:00");
+    expect(availabilityAt(slots, "12:00")).toBe(true);
   });
 });

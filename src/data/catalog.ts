@@ -129,7 +129,7 @@ export const PLACEHOLDER_SERVICES: Service[] = [
     name: "Simple Makeup",
     description:
       "A clean, fresh look for everyday occasions or a polished daytime finish.",
-    priceCents: 7500,
+    priceCents: 8000,
     durationMinutes: 60,
     imageUrl: simpleMakeupImg.src,
     weekdayMask: MON_TO_SAT_MASK,
@@ -184,7 +184,7 @@ export const PLACEHOLDER_SERVICES: Service[] = [
     slug: "prom-makeup",
     name: "Prom Makeup",
     description: "A confident, photo-ready prom look in one hour.",
-    priceCents: 10000,
+    priceCents: 8000,
     durationMinutes: 60,
     imageUrl: promMakeupImg.src,
     weekdayMask: MON_TO_SAT_MASK,
@@ -392,7 +392,7 @@ export const PLACEHOLDER_SERVICES: Service[] = [
     id: "srv-removal-laser",
     categoryId: "cat-removal",
     slug: "removal-laser",
-    name: "Laser Removal",
+    name: "Body Laser Removal",
     description:
       "Laser-based removal of unwanted tattoo or pigment, by session.",
     priceCents: 10000,

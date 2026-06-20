@@ -102,10 +102,12 @@ function bookingsInPool(
     .map(({ start, end }) => ({ start, end }));
 }
 
+export type AvailableSlot = { iso: string; available: boolean };
+
 export async function getAvailableSlots(
   serviceSlug: string,
   dayKey: string,
-): Promise<{ slots: string[]; closed: boolean }> {
+): Promise<{ slots: AvailableSlot[]; closed: boolean }> {
   const service = findServiceBySlug(serviceSlug);
   if (!service) return { slots: [], closed: true };
 
@@ -128,7 +130,10 @@ export async function getAvailableSlots(
   });
 
   return {
-    slots: slots.map((d) => d.toISOString()),
+    slots: slots.map((s) => ({
+      iso: s.start.toISOString(),
+      available: s.available,
+    })),
     closed: false,
   };
 }

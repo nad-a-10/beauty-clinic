@@ -16,11 +16,22 @@ export interface GenerateSlotsArgs {
   capacity?: number;
 }
 
+export interface SlotAvailability {
+  start: Date;
+  /** False when booking this slot would exceed the pool's capacity. */
+  available: boolean;
+}
+
 function rangesOverlap(a: BookingTimeRange, b: BookingTimeRange): boolean {
   return a.start < b.end && b.start < a.end;
 }
 
-export function generateSlots(args: GenerateSlotsArgs): Date[] {
+/**
+ * Every start time in the day's open window (open → last slot that still ends
+ * by close), each flagged available/unavailable. Unavailable slots are kept so
+ * the UI can show them disabled rather than dropping them silently.
+ */
+export function generateSlots(args: GenerateSlotsArgs): SlotAvailability[] {
   const {
     open,
     close,
@@ -36,7 +47,7 @@ export function generateSlots(args: GenerateSlotsArgs): Date[] {
 
   const lastValidStart = addMinutes(close, -serviceDurationMin).getTime();
 
-  const slots: Date[] = [];
+  const slots: SlotAvailability[] = [];
   let cursor = open;
 
   while (cursor.getTime() <= lastValidStart) {
@@ -48,7 +59,7 @@ export function generateSlots(args: GenerateSlotsArgs): Date[] {
     const overlaps = existingBookings.filter((b) =>
       rangesOverlap(candidate, b),
     ).length;
-    if (overlaps < capacity) slots.push(cursor);
+    slots.push({ start: cursor, available: overlaps < capacity });
 
     cursor = addMinutes(cursor, granularityMin);
   }
