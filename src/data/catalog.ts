@@ -27,7 +27,7 @@ import underEyesImg from "@/Images/services/under_eyes_treatment.jpg";
 import microNeedlingImg from "@/Images/services/micro_needling.jpg";
 import microNeedlingNeckImg from "@/Images/services/micro_needling_neck.jpg";
 import faceNeckMassageImg from "@/Images/services/face_and_neck_massage.jpg";
-import laserTattooRemovalImg from "@/Images/services/laser_tattoo_removal.jpg";
+import eyebrowLaserRemovalImg from "@/Images/services/eyebrow_laser_tattoo_removal.jpeg";
 import lipLinerImg from "@/Images/services/lip_liner_tattoo.jpg";
 import lipLaserRemovalImg from "@/Images/services/lip_laser_removal.jpg";
 import lashLiftImg from "@/Images/services/lash_lifts.jpg";
@@ -142,7 +142,7 @@ export const PLACEHOLDER_SERVICES: Service[] = [
     slug: "bridal-makeup",
     name: "Bridal Makeup",
     description:
-      "A 90-minute bridal session crafted for the wedding day. Trial available on request.",
+      "A 90-minute bridal session crafted for the wedding day.",
     priceCents: 35000,
     durationMinutes: 90,
     imageUrl: bridalMakeupImg.src,
@@ -156,9 +156,9 @@ export const PLACEHOLDER_SERVICES: Service[] = [
     slug: "bridal-bridesmaid-package",
     name: "Bridal + Bridesmaid Package",
     description:
-      "Bride and bridesmaid styled together. ~1 hour each, $500 total for both looks.",
+      "Bride and bridesmaid styled together, approximately 3 hours total. $500 for both looks.",
     priceCents: 50000,
-    durationMinutes: 120,
+    durationMinutes: 180,
     imageUrl: bridesmaidPackageImg.src,
     weekdayMask: MON_TO_SAT_MASK,
     isActive: true,
@@ -397,7 +397,7 @@ export const PLACEHOLDER_SERVICES: Service[] = [
       "Laser-based removal of unwanted tattoo or pigment, by session.",
     priceCents: 10000,
     durationMinutes: 30,
-    imageUrl: laserTattooRemovalImg.src,
+    imageUrl: eyebrowLaserRemovalImg.src,
     weekdayMask: MON_TO_SAT_MASK,
     isActive: true,
     sortOrder: 1,
