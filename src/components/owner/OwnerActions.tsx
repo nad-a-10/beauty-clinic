@@ -5,6 +5,7 @@ import { Check, MessageCircle, RefreshCw, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { respondToBooking } from "@/server/actions/bookings";
 import type { BookingStatus } from "@/types/booking";
+import { WhatsAppLink } from "./WhatsAppLink";
 
 type Decision = "confirmed" | "denied";
 
@@ -128,13 +129,10 @@ function DecisionPanel({
   changing: boolean;
 }) {
   const isConfirm = status === "confirmed";
-  const phoneDigits = customerPhoneE164.replace(/[^0-9]/g, "");
+  const hasPhone = /[0-9]/.test(customerPhoneE164);
   const message = isConfirm
     ? `Hi ${customerName}, your ${serviceName} booking is confirmed. See you soon.`
     : `Hi ${customerName}, unfortunately we can't take your ${serviceName} booking at that time. Could we suggest another?`;
-  const waUrl = phoneDigits
-    ? `https://wa.me/${phoneDigits}?text=${encodeURIComponent(message)}`
-    : null;
 
   return (
     <div className="space-y-4">
@@ -167,18 +165,17 @@ function DecisionPanel({
             : "We've released this slot. Customers can book it again. The 24-hour hold has been cancelled."}
         </p>
 
-        {waUrl ? (
-          <a
-            href={waUrl}
-            target="_blank"
-            rel="noopener noreferrer"
+        {hasPhone ? (
+          <WhatsAppLink
+            phoneE164={customerPhoneE164}
+            message={message}
             className="mt-7 inline-flex items-center gap-2 rounded-full bg-ivory px-7 py-3.5 text-sm font-medium uppercase tracking-[0.22em] text-charcoal transition hover:bg-cream"
           >
             <MessageCircle className="h-4 w-4" aria-hidden />
             {isConfirm
               ? "Message client to confirm"
               : "Message client to suggest a new time"}
-          </a>
+          </WhatsAppLink>
         ) : null}
       </div>
 
