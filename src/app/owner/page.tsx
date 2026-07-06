@@ -4,6 +4,7 @@ import { formatInTimeZone } from "date-fns-tz";
 import { ArrowLeft, AlertCircle, CalendarCheck2, Clock, MessageCircle } from "lucide-react";
 import { OwnerLogin } from "@/components/owner/OwnerLogin";
 import { WhatsAppLink } from "@/components/owner/WhatsAppLink";
+import { AddToCalendar } from "@/components/owner/AddToCalendar";
 import { siteConfig } from "@/config/site";
 import { formatCurrency, formatDuration } from "@/lib/utils";
 import { listConfirmedBookings } from "@/server/actions/bookings";
@@ -102,6 +103,23 @@ export default async function OwnerDashboardPage() {
                           Message
                         </WhatsAppLink>
                       ) : null}
+                    </div>
+
+                    <div className="mt-3 flex flex-wrap items-center gap-2">
+                      <AddToCalendar
+                        event={{
+                          uid: b.id,
+                          title: `${b.serviceName} · ${b.customerName}`,
+                          startIso: b.scheduledAt,
+                          endIso: b.endsAt,
+                          description: [
+                            `Client: ${b.customerName}`,
+                            `Phone: ${b.customerPhone}`,
+                            `Service: ${b.serviceName}`,
+                          ].join("\n"),
+                          location: siteConfig.contact.addressLines.join(", "),
+                        }}
+                      />
                     </div>
                   </li>
                 );

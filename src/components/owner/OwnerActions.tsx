@@ -4,8 +4,10 @@ import { useState, useTransition } from "react";
 import { Check, MessageCircle, RefreshCw, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { respondToBooking } from "@/server/actions/bookings";
+import { siteConfig } from "@/config/site";
 import type { BookingStatus } from "@/types/booking";
 import { WhatsAppLink } from "./WhatsAppLink";
+import { AddToCalendar } from "./AddToCalendar";
 
 type Decision = "confirmed" | "denied";
 
@@ -14,6 +16,9 @@ interface Props {
   customerPhoneE164: string;
   customerName: string;
   serviceName: string;
+  scheduledAtIso: string;
+  endsAtIso: string;
+  notes?: string | null;
   initialStatus: BookingStatus;
 }
 
@@ -27,6 +32,9 @@ export function OwnerActions({
   customerPhoneE164,
   customerName,
   serviceName,
+  scheduledAtIso,
+  endsAtIso,
+  notes,
   initialStatus,
 }: Props) {
   const [pending, startTransition] = useTransition();
@@ -64,9 +72,13 @@ export function OwnerActions({
     return (
       <DecisionPanel
         status={view.status}
+        token={token}
         customerPhoneE164={customerPhoneE164}
         customerName={customerName}
         serviceName={serviceName}
+        scheduledAtIso={scheduledAtIso}
+        endsAtIso={endsAtIso}
+        notes={notes}
         onChangeMind={() => handle(opposite)}
         changing={pending && pendingAction === opposite}
       />
@@ -115,16 +127,24 @@ export function OwnerActions({
 
 function DecisionPanel({
   status,
+  token,
   customerPhoneE164,
   customerName,
   serviceName,
+  scheduledAtIso,
+  endsAtIso,
+  notes,
   onChangeMind,
   changing,
 }: {
   status: Decision;
+  token: string;
   customerPhoneE164: string;
   customerName: string;
   serviceName: string;
+  scheduledAtIso: string;
+  endsAtIso: string;
+  notes?: string | null;
   onChangeMind: () => void;
   changing: boolean;
 }) {
@@ -133,6 +153,22 @@ function DecisionPanel({
   const message = isConfirm
     ? `Hi ${customerName}, your ${serviceName} booking is confirmed. See you soon.`
     : `Hi ${customerName}, unfortunately we can't take your ${serviceName} booking at that time. Could we suggest another?`;
+
+  const calendarEvent = {
+    uid: token,
+    title: `${serviceName} · ${customerName}`,
+    startIso: scheduledAtIso,
+    endIso: endsAtIso,
+    description: [
+      `Client: ${customerName}`,
+      `Phone: ${customerPhoneE164}`,
+      `Service: ${serviceName}`,
+      notes ? `Notes: ${notes}` : null,
+    ]
+      .filter(Boolean)
+      .join("\n"),
+    location: siteConfig.contact.addressLines.join(", "),
+  };
 
   return (
     <div className="space-y-4">
@@ -176,6 +212,17 @@ function DecisionPanel({
               ? "Message client to confirm"
               : "Message client to suggest a new time"}
           </WhatsAppLink>
+        ) : null}
+
+        {isConfirm ? (
+          <div className="mt-7 border-t border-white/20 pt-5">
+            <p className="text-[11px] uppercase tracking-[0.28em] text-white/70">
+              Add to your calendar
+            </p>
+            <div className="mt-3">
+              <AddToCalendar event={calendarEvent} tone="dark" />
+            </div>
+          </div>
         ) : null}
       </div>
 

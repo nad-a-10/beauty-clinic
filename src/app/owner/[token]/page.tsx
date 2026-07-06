@@ -66,6 +66,9 @@ export default async function OwnerManagePage({
                   customerPhoneE164={result.booking.customerPhone}
                   customerName={result.booking.customerName}
                   serviceName={result.booking.serviceName}
+                  scheduledAtIso={result.booking.scheduledAt}
+                  endsAtIso={result.booking.endsAt}
+                  notes={result.booking.notes}
                   initialStatus={result.booking.status}
                 />
               )}
