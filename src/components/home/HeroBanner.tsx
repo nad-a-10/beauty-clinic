@@ -45,10 +45,10 @@ export function HeroBanner() {
                 Open
               </dt>
               <dd className="font-display text-2xl leading-tight text-charcoal">
-                Mon&ndash;Sat
+                Mon&ndash;Sun
               </dd>
               <dd className="text-xs text-muted sm:whitespace-nowrap">
-                09:00 &ndash; 19:00
+                09:00 &ndash; 19:00 · Sun from 07:00
               </dd>
             </div>
             <div className="space-y-1.5">

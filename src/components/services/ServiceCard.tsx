@@ -2,7 +2,6 @@ import Link from "next/link";
 import { ArrowUpRight, Clock } from "lucide-react";
 import { formatCurrency, formatDuration } from "@/lib/utils";
 import type { Service } from "@/types/catalog";
-import { SUNDAY_BIT } from "@/types/catalog";
 
 interface Props {
   service: Service;
@@ -10,8 +9,6 @@ interface Props {
 }
 
 export function ServiceCard({ service, categoryName }: Props) {
-  const sundayAvailable = (service.weekdayMask & SUNDAY_BIT) !== 0;
-
   return (
     <article className="group relative flex flex-col overflow-hidden rounded-[1.5rem] border border-line/60 bg-ivory shadow-soft transition hover:-translate-y-0.5 hover:shadow-lift">
       <div className="relative aspect-[4/3] w-full overflow-hidden">
@@ -33,11 +30,6 @@ export function ServiceCard({ service, categoryName }: Props) {
         <span className="absolute left-4 top-4 rounded-full bg-ivory/90 px-3 py-1 text-[10px] uppercase tracking-[0.28em] text-charcoal backdrop-blur">
           {categoryName}
         </span>
-        {sundayAvailable && (
-          <span className="absolute right-4 top-4 rounded-full bg-gold-500/90 px-3 py-1 text-[10px] uppercase tracking-[0.24em] text-white backdrop-blur">
-            Sun ok
-          </span>
-        )}
       </div>
 
       <div className="flex flex-1 flex-col gap-4 p-6">
