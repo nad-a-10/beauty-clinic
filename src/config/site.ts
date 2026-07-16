@@ -19,7 +19,7 @@ export const siteConfig = {
   },
   hours: {
     weekdays: "Mon – Sat · 09:00 – 19:00",
-    sunday: "Sunday · 07:00 – 19:00",
+    sunday: "Sunday · 07:00 – 13:00",
   },
   // The clinic's timezone. All booking slots and times are computed and
   // displayed in this zone, regardless of the visitor's or server's locale.
