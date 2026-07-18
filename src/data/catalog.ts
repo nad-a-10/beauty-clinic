@@ -761,7 +761,7 @@ export const PLACEHOLDER_SERVICES: Service[] = [
     name: "Rubber Base + Gel Color",
     description:
       "Russian dry manicure with rubber base and gel color in one session.",
-    priceCents: 3500,
+    priceCents: 4000,
     durationMinutes: 90,
     imageUrl: rubberBaseGelishImg.src,
     weekdayMask: ALL_WEEK_MASK,
