@@ -18,7 +18,7 @@ export const siteConfig = {
     mapsUrl: "https://maps.app.goo.gl/Lceq4wVTA3h8wRsy7?g_st=aw",
   },
   hours: {
-    weekdays: "Mon – Sat · 09:00 – 19:00",
+    weekdays: "Tue – Sat · 09:00 – 19:00",
     sunday: "Sunday · 07:00 – 13:00",
   },
   // The clinic's timezone. All booking slots and times are computed and
