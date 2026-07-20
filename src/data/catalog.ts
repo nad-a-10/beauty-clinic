@@ -130,14 +130,15 @@ export const PLACEHOLDER_SERVICES: Service[] = [
     id: "srv-simple-makeup",
     categoryId: "cat-makeup",
     slug: "simple-makeup",
-    name: "Simple Makeup",
+    name: "Assistant Makeup",
     description:
       "A clean, fresh look for everyday occasions or a polished daytime finish.",
     priceCents: 8000,
     durationMinutes: 60,
     imageUrl: simpleMakeupImg.src,
     weekdayMask: OPEN_DAYS,
-    isActive: true,
+    // Temporarily unavailable — hidden from the site and not bookable.
+    isActive: false,
     sortOrder: 1,
   },
   {
