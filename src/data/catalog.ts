@@ -397,7 +397,7 @@ export const PLACEHOLDER_SERVICES: Service[] = [
     id: "srv-removal-laser",
     categoryId: "cat-removal",
     slug: "removal-laser",
-    name: "Body Laser Removal",
+    name: "Eyebrow Tattoo Removal",
     description:
       "Laser-based removal of unwanted tattoo or pigment, by session.",
     priceCents: 10000,
@@ -415,7 +415,7 @@ export const PLACEHOLDER_SERVICES: Service[] = [
     description: "Saline-based pigment removal — gentler, gradual lightening.",
     priceCents: 5000,
     durationMinutes: 30,
-    imageUrl: "https://images.unsplash.com/photo-1597852075234-fd721ac361d3?auto=format&fit=crop&w=900&q=80",
+    imageUrl: null,
     weekdayMask: OPEN_DAYS,
     isActive: true,
     sortOrder: 2,
