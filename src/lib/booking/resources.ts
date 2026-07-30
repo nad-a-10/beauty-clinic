@@ -17,14 +17,12 @@ export const MAIN_POOL: ResourcePool = { key: "main", capacity: 1 };
 
 /**
  * Category-specific pools, keyed by category id. The nails category runs as
- * its own station alongside the main room and can host two clients at once,
- * so nail appointments never block (and are never blocked by) other services.
- *
- * The nails category isn't in the catalog yet — this entry stays dormant
- * until services are assigned to `cat-nails`, at which point it activates.
+ * its own station alongside the main room, so nail appointments never block
+ * (and are never blocked by) other services. One nails client at a time for
+ * now — bump capacity when a second nails chair is available.
  */
 const CATEGORY_POOLS: Record<string, ResourcePool> = {
-  "cat-nails": { key: "nails", capacity: 2 },
+  "cat-nails": { key: "nails", capacity: 1 },
 };
 
 export function poolForCategoryId(categoryId: string | undefined): ResourcePool {
