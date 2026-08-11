@@ -17,6 +17,7 @@ import shadowBrowsImg from "@/Images/services/eyebrow_tattoo.png";
 import liftTreatmentImg from "@/Images/services/lift_treatment.png";
 import lipBlushImg from "@/Images/services/lip_blush.jpg";
 import lashExtensionsImg from "@/Images/services/lash_extensions.jpg";
+import eyelinerTattooImg from "@/Images/services/eyeliner_tattoo.jpeg";
 import manicureImg from "@/Images/services/manicure.jpeg";
 import pedicureImg from "@/Images/services/pedicure.jpeg";
 import spaPedicureImg from "@/Images/services/spa_pedicure.jpeg";
@@ -96,7 +97,7 @@ export const PLACEHOLDER_CATEGORIES: Category[] = [
     id: "cat-lashes",
     slug: "lashes",
     name: "Lashes",
-    blurb: "Lash lifts, full extensions, refills, and lash tinting.",
+    blurb: "Lash lifts, full extensions, refills, tinting, and eyeliner tattoo.",
     sortOrder: 6,
   },
   {
@@ -545,6 +546,20 @@ export const PLACEHOLDER_SERVICES: Service[] = [
     weekdayMask: OPEN_DAYS,
     isActive: true,
     sortOrder: 4,
+  },
+  {
+    id: "srv-eyeliner-tattoo",
+    categoryId: "cat-lashes",
+    slug: "eyeliner-tattoo",
+    name: "Eyeliner Tattoo",
+    description:
+      "Permanent eyeliner tattoo for lasting definition — includes a retouch session after one month.",
+    priceCents: 35000,
+    durationMinutes: 90,
+    imageUrl: eyelinerTattooImg.src,
+    weekdayMask: OPEN_DAYS,
+    isActive: true,
+    sortOrder: 5,
   },
 
   // ─── Body Laser ───────────────────────────────────────
