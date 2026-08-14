@@ -116,12 +116,19 @@ export const PLACEHOLDER_CATEGORIES: Category[] = [
     sortOrder: 8,
   },
   {
+    id: "cat-massages",
+    slug: "massages",
+    name: "Massages",
+    blurb: "Full body, shoulder, and foot massages — calm, restorative care.",
+    sortOrder: 9,
+  },
+  {
     id: "cat-courses",
     slug: "courses",
     name: "Courses",
     blurb:
       "Multi-month makeup and permanent tattoo programs, plus multi-session nail packages.",
-    sortOrder: 9,
+    sortOrder: 10,
   },
 ];
 
@@ -927,6 +934,47 @@ export const PLACEHOLDER_SERVICES: Service[] = [
     weekdayMask: OPEN_DAYS,
     isActive: true,
     sortOrder: 8,
+  },
+
+  // ─── Massages ─────────────────────────────────────────
+  {
+    id: "srv-massage-full-body",
+    categoryId: "cat-massages",
+    slug: "massage-full-body",
+    name: "Full Body Massage",
+    description: "A full-hour, head-to-toe massage to release tension and reset.",
+    priceCents: 6000,
+    durationMinutes: 60,
+    imageUrl: null,
+    weekdayMask: OPEN_DAYS,
+    isActive: true,
+    sortOrder: 1,
+  },
+  {
+    id: "srv-massage-shoulder",
+    categoryId: "cat-massages",
+    slug: "massage-shoulder",
+    name: "Shoulder Massage",
+    description: "Focused neck-and-shoulder work to melt away built-up tension.",
+    priceCents: 4000,
+    durationMinutes: 40,
+    imageUrl: null,
+    weekdayMask: OPEN_DAYS,
+    isActive: true,
+    sortOrder: 2,
+  },
+  {
+    id: "srv-massage-foot",
+    categoryId: "cat-massages",
+    slug: "massage-foot",
+    name: "Foot Massage",
+    description: "A restorative foot massage to soothe tired feet and unwind.",
+    priceCents: 4000,
+    durationMinutes: 40,
+    imageUrl: null,
+    weekdayMask: OPEN_DAYS,
+    isActive: true,
+    sortOrder: 3,
   },
 
   // ─── Courses ──────────────────────────────────────────
