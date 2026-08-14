@@ -18,6 +18,9 @@ import liftTreatmentImg from "@/Images/services/lift_treatment.png";
 import lipBlushImg from "@/Images/services/lip_blush.jpg";
 import lashExtensionsImg from "@/Images/services/lash_extensions.jpg";
 import eyelinerTattooImg from "@/Images/services/eyeliner_tattoo.jpeg";
+import fullBodyMassageImg from "@/Images/services/fullbody_massage.jpeg";
+import shoulderMassageImg from "@/Images/services/shoulder_massage.jpeg";
+import feetMassageImg from "@/Images/services/feet_massage.jpeg";
 import manicureImg from "@/Images/services/manicure.jpeg";
 import pedicureImg from "@/Images/services/pedicure.jpeg";
 import spaPedicureImg from "@/Images/services/spa_pedicure.jpeg";
@@ -945,7 +948,7 @@ export const PLACEHOLDER_SERVICES: Service[] = [
     description: "A full-hour, head-to-toe massage to release tension and reset.",
     priceCents: 6000,
     durationMinutes: 60,
-    imageUrl: null,
+    imageUrl: fullBodyMassageImg.src,
     weekdayMask: OPEN_DAYS,
     isActive: true,
     sortOrder: 1,
@@ -958,7 +961,7 @@ export const PLACEHOLDER_SERVICES: Service[] = [
     description: "Focused neck-and-shoulder work to melt away built-up tension.",
     priceCents: 4000,
     durationMinutes: 40,
-    imageUrl: null,
+    imageUrl: shoulderMassageImg.src,
     weekdayMask: OPEN_DAYS,
     isActive: true,
     sortOrder: 2,
@@ -971,7 +974,7 @@ export const PLACEHOLDER_SERVICES: Service[] = [
     description: "A restorative foot massage to soothe tired feet and unwind.",
     priceCents: 4000,
     durationMinutes: 40,
-    imageUrl: null,
+    imageUrl: feetMassageImg.src,
     weekdayMask: OPEN_DAYS,
     isActive: true,
     sortOrder: 3,
