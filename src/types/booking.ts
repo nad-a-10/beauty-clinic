@@ -23,7 +23,12 @@ export interface Booking {
 export interface BookingWithService extends Booking {
   serviceName: string;
   serviceDurationMinutes: number;
+  /** Price after any promo discount — the amount the customer will pay. */
   servicePriceCents: number;
+  promoCode?: string | null;
+  promoPercentOff?: number | null;
+  /** Catalog price before the promo discount, when one was applied. */
+  originalPriceCents?: number | null;
 }
 
 export interface BookingTimeRange {

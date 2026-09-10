@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { findPromo } from "@/lib/booking/promos";
 
 export const phoneRegex = /^[+0-9 ()-]{7,25}$/;
 
@@ -18,6 +19,14 @@ export const bookingFormSchema = z.object({
     .optional()
     .or(z.literal("")),
   notes: z.string().max(500, "Keep notes under 500 characters").optional(),
+  promoCode: z
+    .string()
+    .max(30, "Promo code is too long")
+    .optional()
+    .refine(
+      (v) => !v || !!findPromo(v),
+      "This promo code isn't valid",
+    ),
   scheduledAtIso: z
     .string()
     .min(1, "Pick a time")

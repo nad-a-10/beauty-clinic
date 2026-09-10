@@ -9,6 +9,11 @@ import { generateSlots } from "@/lib/booking/slots";
 import { countOverlaps } from "@/lib/booking/conflicts";
 import { poolForCategoryId, poolForServiceId } from "@/lib/booking/resources";
 import { isOwnerAuthed, signInOwner } from "@/lib/booking/owner-auth";
+import {
+  discountedPriceCents,
+  findPromo,
+  promoAllowedForCategory,
+} from "@/lib/booking/promos";
 import { bookingFormSchema } from "@/lib/booking/schema";
 import { getNotifier } from "@/lib/booking/notifier";
 import { createSupabaseAdmin } from "@/lib/supabase/server";
@@ -158,12 +163,33 @@ export async function createBooking(
     };
   }
 
-  const { serviceSlug, customerName, customerPhone, customerEmail, notes, scheduledAtIso } =
+  const { serviceSlug, customerName, customerPhone, customerEmail, notes, scheduledAtIso, promoCode } =
     parsed.data;
   const service = findServiceBySlug(serviceSlug);
   if (!service) {
     return { ok: false, reason: "service_unknown", message: "Service not found." };
   }
+
+  // Promo codes: validated again server-side so a crafted request can't apply
+  // a discount to an excluded category or an unknown code.
+  const promo = findPromo(promoCode);
+  if (promoCode?.trim() && !promo) {
+    return {
+      ok: false,
+      reason: "validation",
+      message: "This promo code isn't valid.",
+    };
+  }
+  if (promo && !promoAllowedForCategory(service.categoryId)) {
+    return {
+      ok: false,
+      reason: "validation",
+      message: "Promo codes can't be used for makeup services.",
+    };
+  }
+  const finalPriceCents = promo
+    ? discountedPriceCents(service.priceCents, promo.percentOff)
+    : service.priceCents;
 
   const start = new Date(scheduledAtIso);
   if (Number.isNaN(start.getTime())) {
@@ -206,7 +232,7 @@ export async function createBooking(
       .insert({
         service_id: service.id,
         service_name: service.name,
-        service_price_cents: service.priceCents,
+        service_price_cents: finalPriceCents,
         service_duration_minutes: service.durationMinutes,
         customer_name: customerName,
         customer_phone: customerPhone,
@@ -254,7 +280,10 @@ export async function createBooking(
     createdAt: new Date().toISOString(),
     serviceName: service.name,
     serviceDurationMinutes: service.durationMinutes,
-    servicePriceCents: service.priceCents,
+    servicePriceCents: finalPriceCents,
+    promoCode: promo?.code ?? null,
+    promoPercentOff: promo?.percentOff ?? null,
+    originalPriceCents: promo ? service.priceCents : null,
   };
 
   const result = await getNotifier().buildHandoff(bookingForNotifier);

@@ -9,6 +9,7 @@ import {
   MessageCircle,
   Phone,
   StickyNote,
+  TicketPercent,
   User,
 } from "lucide-react";
 import Link from "next/link";
@@ -22,6 +23,12 @@ import {
   bookingFormSchema,
   type BookingFormValues,
 } from "@/lib/booking/schema";
+import {
+  discountedPriceCents,
+  findPromo,
+  promoAllowedForCategory,
+  type PromoCode,
+} from "@/lib/booking/promos";
 import { createBooking } from "@/server/actions/bookings";
 import { siteConfig } from "@/config/site";
 import type { ServiceWithCategory } from "@/types/catalog";
@@ -39,6 +46,7 @@ type Submission =
       whatsappUrl: string;
       messagePreview: string;
       scheduledAt: string;
+      promo: PromoCode | null;
     };
 
 export function BookingFlow({ service }: Props) {
@@ -51,6 +59,7 @@ export function BookingFlow({ service }: Props) {
     register,
     handleSubmit,
     setValue,
+    watch,
     formState: { errors },
   } = useForm<BookingFormValues>({
     resolver: zodResolver(bookingFormSchema),
@@ -60,9 +69,15 @@ export function BookingFlow({ service }: Props) {
       customerPhone: "",
       customerEmail: "",
       notes: "",
+      promoCode: "",
       scheduledAtIso: "",
     },
   });
+
+  // Promo codes apply to every category except makeup.
+  const promoEligible = promoAllowedForCategory(service.category.id);
+  const promoInput = watch("promoCode") ?? "";
+  const promo = promoEligible ? findPromo(promoInput) : null;
 
   useEffect(() => {
     setValue("scheduledAtIso", selectedSlotIso ?? "", {
@@ -91,6 +106,7 @@ export function BookingFlow({ service }: Props) {
 
     const payload: BookingFormValues = {
       ...values,
+      promoCode: promoEligible ? values.promoCode : "",
       scheduledAtIso: selectedSlotIso,
     };
 
@@ -103,6 +119,7 @@ export function BookingFlow({ service }: Props) {
           whatsappUrl: result.whatsappUrl,
           messagePreview: result.messagePreview,
           scheduledAt: payload.scheduledAtIso,
+          promo: promoEligible ? findPromo(payload.promoCode) : null,
         });
       } else {
         setSubmission({ kind: "error", message: result.message });
@@ -183,6 +200,37 @@ export function BookingFlow({ service }: Props) {
               />
             </Field>
 
+            {promoEligible ? (
+              <Field
+                label="Promo code (optional)"
+                icon={
+                  <TicketPercent
+                    className="h-4 w-4 text-rose-500"
+                    aria-hidden
+                  />
+                }
+                error={promo ? undefined : errors.promoCode?.message}
+              >
+                <input
+                  {...register("promoCode")}
+                  placeholder="Enter your code"
+                  autoComplete="off"
+                  autoCapitalize="characters"
+                  spellCheck={false}
+                  className="w-full rounded-2xl border border-line/70 bg-ivory px-4 py-3 text-sm uppercase text-charcoal placeholder:normal-case placeholder:text-muted/70 focus:border-rose-500 focus:outline-none focus:ring-2 focus:ring-rose-300/40"
+                />
+                {promo ? (
+                  <span className="block text-xs font-medium text-emerald-600">
+                    {promo.code} applied — {promo.percentOff}% off
+                  </span>
+                ) : promoInput.trim() ? (
+                  <span className="block text-xs text-muted">
+                    Code not recognized.
+                  </span>
+                ) : null}
+              </Field>
+            ) : null}
+
             <Field
               label="Notes (optional)"
               icon={<StickyNote className="h-4 w-4 text-rose-500" aria-hidden />}
@@ -205,6 +253,7 @@ export function BookingFlow({ service }: Props) {
           <BookingSummary
             service={service}
             slotIso={selectedSlotIso}
+            promo={promo}
             errors={errors}
             pending={pending}
             error={
@@ -251,11 +300,13 @@ function Field({
 function BookingSummary({
   service,
   slotIso,
+  promo,
   pending,
   error,
 }: {
   service: ServiceWithCategory;
   slotIso: string | null;
+  promo: PromoCode | null;
   errors: Record<string, unknown>;
   pending: boolean;
   error: string | null;
@@ -303,9 +354,27 @@ function BookingSummary({
             </dd>
           </div>
           <div className="flex items-center justify-between">
-            <dt className="text-muted">Price</dt>
+            <dt className="text-muted">
+              Price
+              {promo ? (
+                <span className="ml-2 rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide text-emerald-700">
+                  {promo.code} · -{promo.percentOff}%
+                </span>
+              ) : null}
+            </dt>
             <dd className="font-display text-xl text-rose-600">
-              {formatCurrency(service.priceCents)}
+              {promo ? (
+                <>
+                  <span className="mr-2 text-sm text-muted line-through">
+                    {formatCurrency(service.priceCents)}
+                  </span>
+                  {formatCurrency(
+                    discountedPriceCents(service.priceCents, promo.percentOff),
+                  )}
+                </>
+              ) : (
+                formatCurrency(service.priceCents)
+              )}
             </dd>
           </div>
           <div className="flex items-center justify-between">
@@ -374,6 +443,10 @@ function BookingSuccess({
   service: ServiceWithCategory;
 }) {
   const slot = new Date(submission.scheduledAt);
+  const promo = submission.promo;
+  const finalPriceCents = promo
+    ? discountedPriceCents(service.priceCents, promo.percentOff)
+    : service.priceCents;
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -420,7 +493,12 @@ function BookingSuccess({
           </p>
           <p className="mt-1 text-xs text-muted">
             {formatDuration(service.durationMinutes)} ·{" "}
-            {formatCurrency(service.priceCents)}
+            {formatCurrency(finalPriceCents)}
+            {promo ? (
+              <span className="ml-1.5 text-emerald-600">
+                ({promo.code} · -{promo.percentOff}%)
+              </span>
+            ) : null}
           </p>
         </div>
         <div>

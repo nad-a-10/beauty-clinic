@@ -1,6 +1,7 @@
 import { formatInTimeZone } from "date-fns-tz";
 import { isSupabaseConfigured, publicEnv, serverEnv } from "@/config/env";
 import { siteConfig } from "@/config/site";
+import { formatCurrency } from "@/lib/utils";
 import type { BookingWithService } from "@/types/booking";
 import { WhatsAppLinkNotifier } from "./whatsapp-link";
 import { TwilioNotifier } from "./twilio";
@@ -22,12 +23,18 @@ export function buildOwnerMessage(booking: BookingWithService): string {
   );
   const formattedTime = formatInTimeZone(when, siteConfig.timeZone, "h:mm a");
 
+  const priceLine =
+    booking.promoCode && booking.originalPriceCents != null
+      ? `Price:    ${formatCurrency(booking.servicePriceCents)} (promo ${booking.promoCode}, -${booking.promoPercentOff}% off ${formatCurrency(booking.originalPriceCents)})`
+      : `Price:    ${formatCurrency(booking.servicePriceCents)}`;
+
   const lines = [
     `New booking request from ${siteConfig.name}`,
     "",
     `Service:  ${booking.serviceName}`,
     `When:     ${formattedDate} at ${formattedTime}`,
     `Length:   ${booking.serviceDurationMinutes} minutes`,
+    priceLine,
     "",
     `Name:     ${booking.customerName}`,
     `Phone:    ${booking.customerPhone}`,
