@@ -37,6 +37,8 @@ export interface Service {
   name: string;
   description: string;
   priceCents: number;
+  /** Upper end of the price range, when the final price varies (e.g. "$60–$80"). */
+  priceMaxCents?: number;
   durationMinutes: number;
   imageUrl: string | null;
   /** CSS object-position for the card image, when the default center crop is wrong. */

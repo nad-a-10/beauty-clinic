@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowUpRight, Clock } from "lucide-react";
-import { formatCurrency, formatDuration } from "@/lib/utils";
+import { formatDuration, formatPrice } from "@/lib/utils";
 import type { Service } from "@/types/catalog";
 
 interface Props {
@@ -45,7 +45,7 @@ export function ServiceCard({ service, categoryName }: Props) {
         <div className="mt-auto flex items-end justify-between gap-4 pt-2">
           <div>
             <div className="font-display text-2xl text-rose-600">
-              {formatCurrency(service.priceCents)}
+              {formatPrice(service.priceCents, service.priceMaxCents)}
             </div>
             <div className="mt-1 inline-flex items-center gap-1.5 text-xs text-muted">
               <Clock className="h-3.5 w-3.5" aria-hidden />

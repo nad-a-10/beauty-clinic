@@ -190,6 +190,12 @@ export async function createBooking(
   const finalPriceCents = promo
     ? discountedPriceCents(service.priceCents, promo.percentOff)
     : service.priceCents;
+  const finalPriceMaxCents =
+    service.priceMaxCents != null
+      ? promo
+        ? discountedPriceCents(service.priceMaxCents, promo.percentOff)
+        : service.priceMaxCents
+      : null;
 
   const start = new Date(scheduledAtIso);
   if (Number.isNaN(start.getTime())) {
@@ -281,9 +287,11 @@ export async function createBooking(
     serviceName: service.name,
     serviceDurationMinutes: service.durationMinutes,
     servicePriceCents: finalPriceCents,
+    servicePriceMaxCents: finalPriceMaxCents,
     promoCode: promo?.code ?? null,
     promoPercentOff: promo?.percentOff ?? null,
     originalPriceCents: promo ? service.priceCents : null,
+    originalPriceMaxCents: promo ? (service.priceMaxCents ?? null) : null,
   };
 
   const result = await getNotifier().buildHandoff(bookingForNotifier);

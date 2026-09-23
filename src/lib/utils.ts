@@ -18,6 +18,20 @@ export function formatCurrency(
   }).format(cents / 100);
 }
 
+/** Format a price, or a "min–max" range when maxCents is set and larger. */
+export function formatPrice(
+  cents: number,
+  maxCents?: number | null,
+  currency: string = "USD",
+  locale: string = "en-US",
+): string {
+  const base = formatCurrency(cents, currency, locale);
+  if (maxCents != null && maxCents > cents) {
+    return `${base}–${formatCurrency(maxCents, currency, locale)}`;
+  }
+  return base;
+}
+
 export function formatDuration(minutes: number): string {
   if (minutes < 60) return `${minutes} min`;
   const h = Math.floor(minutes / 60);

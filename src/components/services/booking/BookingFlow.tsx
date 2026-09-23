@@ -18,7 +18,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { DayPicker } from "./DayPicker";
 import { TimeSlotPicker } from "./TimeSlotPicker";
-import { cn, formatCurrency, formatDuration } from "@/lib/utils";
+import { cn, formatDuration, formatPrice } from "@/lib/utils";
 import {
   bookingFormSchema,
   type BookingFormValues,
@@ -366,14 +366,20 @@ function BookingSummary({
               {promo ? (
                 <>
                   <span className="mr-2 text-sm text-muted line-through">
-                    {formatCurrency(service.priceCents)}
+                    {formatPrice(service.priceCents, service.priceMaxCents)}
                   </span>
-                  {formatCurrency(
+                  {formatPrice(
                     discountedPriceCents(service.priceCents, promo.percentOff),
+                    service.priceMaxCents != null
+                      ? discountedPriceCents(
+                          service.priceMaxCents,
+                          promo.percentOff,
+                        )
+                      : undefined,
                   )}
                 </>
               ) : (
-                formatCurrency(service.priceCents)
+                formatPrice(service.priceCents, service.priceMaxCents)
               )}
             </dd>
           </div>
@@ -447,6 +453,12 @@ function BookingSuccess({
   const finalPriceCents = promo
     ? discountedPriceCents(service.priceCents, promo.percentOff)
     : service.priceCents;
+  const finalPriceMaxCents =
+    service.priceMaxCents != null
+      ? promo
+        ? discountedPriceCents(service.priceMaxCents, promo.percentOff)
+        : service.priceMaxCents
+      : undefined;
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -493,7 +505,7 @@ function BookingSuccess({
           </p>
           <p className="mt-1 text-xs text-muted">
             {formatDuration(service.durationMinutes)} ·{" "}
-            {formatCurrency(finalPriceCents)}
+            {formatPrice(finalPriceCents, finalPriceMaxCents)}
             {promo ? (
               <span className="ml-1.5 text-emerald-600">
                 ({promo.code} · -{promo.percentOff}%)
