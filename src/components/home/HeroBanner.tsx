@@ -48,7 +48,7 @@ export function HeroBanner() {
                 Tue&ndash;Sun
               </dd>
               <dd className="text-xs text-muted sm:whitespace-nowrap">
-                09:00 &ndash; 19:00 · Sun 07:00 &ndash; 13:00
+                10:00 &ndash; 19:00 · Sun 07:00 &ndash; 13:00
               </dd>
             </div>
             <div className="space-y-1.5">
